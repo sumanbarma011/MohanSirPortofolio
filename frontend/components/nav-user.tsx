@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronsUpDown, LogOut } from "lucide-react";
-
+import { useAuthStore } from "@/features/core/auth/store/userStore";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -31,13 +31,14 @@ type Props = {
 
 export function NavUser({ user }: Props) {
   const { isMobile } = useSidebar();
-  const router = useRouter();
+  const logoutFn = useAuthStore((u) => u.logout);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const handleLogout = async () => {
     console.log("Update it");
     setIsLoggingOut(true);
     try {
+      logoutFn();
     } finally {
       setIsLoggingOut(false);
     }

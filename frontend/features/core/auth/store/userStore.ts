@@ -6,6 +6,7 @@ import { ApiResponse } from "@/lib/global.types";
 import { ApiPost } from "@/providers/axiosInstance";
 import { UserType } from "../auth.types";
 import { ApiPath } from "@/lib/ApiPath";
+import { redirect } from "next/navigation";
 
 interface AuthState {
   user: UserType | null;
@@ -37,7 +38,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
     } finally {
       set({ user: null });
 
-      window.location.replace("/");
+      return redirect("/");
     }
   },
 }));

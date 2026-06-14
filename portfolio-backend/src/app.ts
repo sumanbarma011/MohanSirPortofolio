@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import skRouter from "./modules/skills&qualification/s&q.routes";
 import contactRouter from "./modules/contactUsers/contact.routes";
 import blogRouter from "./modules/blog/blog.routes";
+import { cloudinaryRouter } from "./modules/cloudinary/cloudinary.routes";
 export const createApp = (): express.Express => {
   const app = express();
 
@@ -28,7 +29,7 @@ export const createApp = (): express.Express => {
 
   // ALLOW URLS "*" allows every frontend domains
 
-  app.use(cors({ origin: "*", credentials: true }));
+  app.use(cors({ origin: process.env.CORS, credentials: true }));
 
   // ALLOW JSON AND FORM DATA
   app.use(express.json());
@@ -46,6 +47,7 @@ export const createApp = (): express.Express => {
   app.use("/sq", skRouter);
   app.use("/contact", contactRouter);
   app.use("/blog", blogRouter);
+  app.use("/cloudinary", cloudinaryRouter);
   app.use(notFound);
 
   // GLOBAL ERROR MIDDLEWARE

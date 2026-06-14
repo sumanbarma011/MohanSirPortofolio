@@ -14,7 +14,7 @@ if (!fs.existsSync(uploadsDir)) {
 // Multer configuration (store locally first, then upload to Cloudinary)
 const storage = multer.diskStorage({
   destination: uploadsDir,
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(
       null,
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 
 // File filter (images AND PDFs only)
 const fileFilter = (
-  req: Request,
+  _req: Request,
   file: Express.Multer.File,
   cb: FileFilterCallback,
 ) => {

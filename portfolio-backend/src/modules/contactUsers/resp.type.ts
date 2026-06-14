@@ -1,4 +1,3 @@
-import { boolean, string } from "zod";
 import { STATUS } from "./contact.model";
 import { Types } from "mongoose";
 
@@ -6,7 +5,7 @@ export type createResponseType = {
   name: string;
   email: string;
   phone: string;
-  service: string;
+  service: string | string[];
   subject: string;
   message: string;
   isResponded: boolean;

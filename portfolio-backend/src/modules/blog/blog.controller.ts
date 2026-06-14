@@ -12,9 +12,8 @@ import {
 
 // ==================== PUBLIC (Viewers) ====================
 
-// Get All Published Posts (Public)
 export const getAllPublishedPosts = catchAsync(
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     const posts = await BlogPost.find({ status: POST_STATUS.PUBLISHED })
       .sort({ publishedAt: -1, views: -1 })
       .limit(50);
@@ -26,7 +25,6 @@ export const getAllPublishedPosts = catchAsync(
   },
 );
 
-// Get Single Published Post (Public)
 export const getPublishedPostById = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const post = await BlogPost.findById(req.params.id);
@@ -39,9 +37,8 @@ export const getPublishedPostById = catchAsync(
       throw notFound("Not Found");
     }
 
-    // Increment views
     post.views = post.views + 1;
-    post.updatedAt = new Date(); // Manual update
+    post.updatedAt = new Date();
     await post.save();
 
     res.status(200).json({
@@ -51,9 +48,8 @@ export const getPublishedPostById = catchAsync(
   },
 );
 
-// Get Featured Posts (Public)
 export const getFeaturedPosts = catchAsync(
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     const posts = await BlogPost.find({
       status: POST_STATUS.PUBLISHED,
       isFeatured: true,
@@ -70,38 +66,51 @@ export const getFeaturedPosts = catchAsync(
 
 // ==================== ADMIN ONLY CRUD ====================
 
-// Create Blog Post (Admin Only) - Manual slug generation
+// Create Blog Post (Admin Only) - Handle images array OR single file
 export const createBlogPost = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const value = req.body || {};
+    const bodyData = req.body || {};
 
-    console.log(value);
-    console.log(req.file);
+    const imageUrlArray: string[] = [];
+    const cloudinaryIdArray: string[] = [];
+
+    // ✅ Handle images array from frontend
+    if (
+      bodyData.images &&
+      Array.isArray(bodyData.images) &&
+      bodyData.images.length > 0
+    ) {
+      for (const image of bodyData.images) {
+        imageUrlArray.push(image.url);
+        cloudinaryIdArray.push(image.cloudinaryId);
+      }
+      bodyData.imageUrl = imageUrlArray;
+    }
+
+    // ✅ OR handle single file upload via Multer
     if (req.file) {
       try {
         const uploadResult = await uploadToCloudinary(
           req.file.path,
           "ca_portfolio/blog",
         );
-        value.imageUrl = uploadResult.secure_url; // Set image URL
-        value.cloudinaryPublicId = uploadResult.public_id; // Set Cloudinary ID
+        bodyData.imageUrl = [uploadResult.secure_url]; // Array with 1 image
+        bodyData.cloudinaryPublicId = [uploadResult.public_id]; // Array with 1 ID
       } catch (uploadError) {
         throw internalError((uploadError as Error).message);
       }
     }
 
-    const post = new BlogPost(value as CreateBlogPostInput);
+    const post = new BlogPost(bodyData as CreateBlogPostInput);
 
-    // Manually generate slug from title
     post.slug = post.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
 
     post.createdAt = new Date();
-    post.updatedAt = new Date(); // Manual update
+    post.updatedAt = new Date();
 
-    // Auto-set publishedAt if status is PUBLISHED
     if (post.status === "PUBLISHED") {
       post.publishedAt = new Date();
     }
@@ -116,16 +125,14 @@ export const createBlogPost = catchAsync(
   },
 );
 
-// Get All Posts (Admin Only)
 export const getAllPosts = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const value = req.query;
 
-    // Build query with filtering
     const query: any = {};
     if (value.status) query.status = value.status;
     if (value.isFeatured) query.isFeatured = value.isFeatured;
-    if (value.tag) query.tags = value.tag; // Filter by tag
+    if (value.tag) query.tags = value.tag;
 
     const posts = await BlogPost.find(query)
       .limit(Number(value.limit) || 20)
@@ -145,7 +152,7 @@ export const getAllPosts = catchAsync(
     });
   },
 );
-// Get Single Post (Admin Only)
+
 export const getPostById = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const post = await BlogPost.findById(req.params.id);
@@ -161,54 +168,86 @@ export const getPostById = catchAsync(
   },
 );
 
-// Update Post (Admin Only) - Manual slug + updatedAt
+// Update Post (Admin Only) - Handle images array OR single file
 export const updatePost = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const value = req.body;
+    const bodyData = req.body || {};
 
     const post = await BlogPost.findById(req.params.id);
 
     if (!post) {
       throw notFound("Blog post");
     }
+
+    // ✅ Handle images array from frontend
+    if (
+      bodyData.images &&
+      Array.isArray(bodyData.images) &&
+      bodyData.images.length > 0
+    ) {
+      try {
+        // Delete old images from Cloudinary
+        if (post.cloudinaryPublicId && Array.isArray(post.cloudinaryPublicId)) {
+          for (const publicId of post.cloudinaryPublicId) {
+            await deleteFromCloudinary(publicId);
+          }
+        }
+
+        // Set new images
+        const imageUrlArray: string[] = [];
+        const cloudinaryIdArray: string[] = [];
+
+        for (const image of bodyData.images) {
+          imageUrlArray.push(image.url);
+          cloudinaryIdArray.push(image.cloudinaryId);
+        }
+
+        post.imageUrl = imageUrlArray;
+        post.cloudinaryPublicId = cloudinaryIdArray;
+      } catch (uploadError) {
+        throw internalError((uploadError as Error).message);
+      }
+    }
+
+    // ✅ OR handle single file upload via Multer
     if (req.file) {
       try {
-        //  NEW: Delete old image from Cloudinary if exists
-        if (post.cloudinaryPublicId) {
-          await deleteFromCloudinary(post.cloudinaryPublicId);
+        // Delete old images
+        if (post.cloudinaryPublicId && Array.isArray(post.cloudinaryPublicId)) {
+          for (const publicId of post.cloudinaryPublicId) {
+            await deleteFromCloudinary(publicId);
+          }
         }
 
         const uploadResult = await uploadToCloudinary(
           req.file.path,
           "ca_portfolio/blog",
         );
-        post.imageUrl = uploadResult.secure_url; // Update image URL
-        post.cloudinaryPublicId = uploadResult.public_id; // Update Cloudinary ID
+        post.imageUrl = [uploadResult.secure_url]; // Array with 1 image
+        post.cloudinaryPublicId = [uploadResult.public_id]; // Array with 1 ID
       } catch (uploadError) {
         throw internalError((uploadError as Error).message);
       }
     }
-    // Update fields
-    if (value.title !== undefined) post.title = value.title;
-    if (value.content !== undefined) post.content = value.content;
-    if (value.excerpt !== undefined) post.excerpt = value.excerpt;
-    if (value.author !== undefined) post.author = value.author;
-    if (value.tags !== undefined) post.tags = value.tags;
-    if (value.isFeatured !== undefined) post.isFeatured = value.isFeatured;
-    if (value.status !== undefined) post.status = value.status;
-    if (value.imageUrl !== undefined) post.imageUrl = value.imageUrl;
 
-    // Regenerate slug if title changed
-    if (value.title !== undefined) {
+    if (bodyData.title !== undefined) post.title = bodyData.title;
+    if (bodyData.content !== undefined) post.content = bodyData.content;
+    if (bodyData.excerpt !== undefined) post.excerpt = bodyData.excerpt;
+    if (bodyData.author !== undefined) post.author = bodyData.author;
+    if (bodyData.tags !== undefined) post.tags = bodyData.tags;
+    if (bodyData.isFeatured !== undefined)
+      post.isFeatured = bodyData.isFeatured;
+    if (bodyData.status !== undefined) post.status = bodyData.status;
+
+    if (bodyData.title !== undefined) {
       post.slug = post.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
     }
 
-    post.updatedAt = new Date(); // Manual update
+    post.updatedAt = new Date();
 
-    // Auto-set publishedAt if changing to PUBLISHED
     if (post.status === "PUBLISHED" && !post.publishedAt) {
       post.publishedAt = new Date();
     }
@@ -223,7 +262,6 @@ export const updatePost = catchAsync(
   },
 );
 
-// Delete Post (Admin Only)
 export const deletePost = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const post = await BlogPost.findById(req.params.id);
@@ -231,14 +269,18 @@ export const deletePost = catchAsync(
     if (!post) {
       throw notFound("Blog post");
     }
-    if (post.cloudinaryPublicId) {
-      try {
-        await deleteFromCloudinary(post.cloudinaryPublicId);
-      } catch (deleteError) {
-        console.error(
-          "Cloudinary deletion failed:",
-          (deleteError as Error).message,
-        );
+
+    // Delete all images from Cloudinary
+    if (post.cloudinaryPublicId && Array.isArray(post.cloudinaryPublicId)) {
+      for (const publicId of post.cloudinaryPublicId) {
+        try {
+          await deleteFromCloudinary(publicId);
+        } catch (deleteError) {
+          console.error(
+            "Cloudinary deletion failed:",
+            (deleteError as Error).message,
+          );
+        }
       }
     }
 
@@ -251,7 +293,6 @@ export const deletePost = catchAsync(
   },
 );
 
-// Publish Post (Admin Only) - Manual updatedAt
 export const publishPost = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const post = await BlogPost.findById(req.params.id);
@@ -264,7 +305,7 @@ export const publishPost = catchAsync(
     if (!post.publishedAt) {
       post.publishedAt = new Date();
     }
-    post.updatedAt = new Date(); // Manual update
+    post.updatedAt = new Date();
     await post.save();
 
     res.status(200).json({
@@ -275,7 +316,6 @@ export const publishPost = catchAsync(
   },
 );
 
-// Archive Post (Admin Only) - Manual updatedAt
 export const archivePost = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const post = await BlogPost.findById(req.params.id);
@@ -285,7 +325,7 @@ export const archivePost = catchAsync(
     }
 
     post.status = POST_STATUS.ARCHIVED;
-    post.updatedAt = new Date(); // Manual update
+    post.updatedAt = new Date();
     await post.save();
 
     res.status(200).json({

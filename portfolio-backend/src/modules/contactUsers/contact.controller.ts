@@ -1,6 +1,6 @@
 import { createResponseType, UpdateUser } from "./resp.type";
 import { ApiResponse } from "./../../utils/types/app.response.type";
-import { z } from "zod";
+
 // controllers/contact.ts
 import { type Request, type Response } from "express";
 import { Contact, STATUS } from "./contact.model";
@@ -196,7 +196,7 @@ export const respondToContact = catchAsync(
 
 // Get New Contacts (Admin Only - Filter by status)
 export const getNewContacts = catchAsync(
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     const contacts = await Contact.find({ status: STATUS.NEW })
       .sort({ createdAt: -1 })
       .limit(50);
@@ -210,7 +210,7 @@ export const getNewContacts = catchAsync(
 
 // Get Unresponded Contacts (Admin Only - Filter by isResponded)
 export const getUnrespondedContacts = catchAsync(
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     const contacts = await Contact.find({ isResponded: false })
       .sort({ createdAt: -1 })
       .limit(50);

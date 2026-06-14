@@ -33,7 +33,6 @@ blogRouter.post(
   "/",
   authMiddleware,
   validate(createBlogPostSchema),
-  upload.single("image"),
   createBlogPost,
 ); //------ done
 blogRouter.get(

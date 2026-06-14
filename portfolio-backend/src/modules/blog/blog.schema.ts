@@ -7,7 +7,13 @@ export type CreateBlogPostSchema = zod.infer<typeof createBlogPostSchema>;
 export type UpdateBlogPostSchema = zod.infer<typeof updateBlogPostSchema>;
 export type GetBlogPostsQuerySchema = zod.infer<typeof getBlogPostsQuerySchema>;
 
-// Create Blog Post Schema (Admin Only)
+// Image Interface
+export const ImageSchema = zod.object({
+  url: zod.string().url(),
+  cloudinaryId: zod.string(),
+});
+
+// Create Blog Post Schema (Admin Only) - Accept images array
 export const createBlogPostSchema = zod.object({
   title: zod
     .string()
@@ -32,11 +38,17 @@ export const createBlogPostSchema = zod.object({
 
   status: zod.enum(POST_STATUS).optional().default(POST_STATUS.DRAFT),
 
+  // Accept images array (with url and cloudinaryId)
+  images: zod
+    .array(ImageSchema)
+    .min(1, "At least one image is required")
+    .optional(),
+
+  // Keep imageUrl for single image upload (backward compatibility)
   imageUrl: zod.string().max(500).optional(),
-  cloudinaryPublicId: zod.string().max(500).optional(),
 });
 
-// Update Blog Post Schema (Admin Only)
+// Update Blog Post Schema (Admin Only) - Accept images array
 export const updateBlogPostSchema = zod.object({
   title: zod.string().min(5).max(200).optional(),
   content: zod.string().min(100).optional(),
@@ -45,6 +57,11 @@ export const updateBlogPostSchema = zod.object({
   tags: zod.array(zod.string().max(50)).optional(),
   isFeatured: zod.boolean().optional(),
   status: zod.enum(POST_STATUS).optional(),
+
+  // Accept images array
+  images: zod.array(ImageSchema).min(1).optional(),
+
+  // Keep imageUrl for single image
   imageUrl: zod.string().max(500).optional(),
 });
 

@@ -1,7 +1,6 @@
 // types/blogPosts.ts
 import { Document } from "mongoose";
 
-// Post Status Enum
 export enum POST_STATUS {
   DRAFT = "DRAFT",
   PUBLISHED = "PUBLISHED",
@@ -18,12 +17,10 @@ export interface IBlogPost extends Document {
   tags: string[];
   isFeatured: boolean;
   status: POST_STATUS;
-  imageUrl?: string;
+  imageUrl?: string[]; // Array of image URLs
   views: number;
   publishedAt?: Date;
-  pdfUrl?: string; // New PDF field
-  fileType?: "image" | "pdf"; // File type indicator
-  cloudinaryPublicId?: string; // Cloudinary ID
+  cloudinaryPublicId?: string[]; // Array of Cloudinary IDs
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,7 +34,7 @@ export interface CreateBlogPostInput {
   tags?: string[];
   isFeatured?: boolean;
   status?: POST_STATUS;
-  imageUrl?: string;
+  imageUrl?: string[]; // Array of URLs
 }
 
 export interface UpdateBlogPostInput {
@@ -48,7 +45,7 @@ export interface UpdateBlogPostInput {
   tags?: string[];
   isFeatured?: boolean;
   status?: POST_STATUS;
-  imageUrl?: string;
+  imageUrl?: string[]; // Array of URLs
 }
 
 export interface GetBlogPostsQueryInput {

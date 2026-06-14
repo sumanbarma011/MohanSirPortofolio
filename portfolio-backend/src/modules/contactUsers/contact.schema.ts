@@ -20,7 +20,9 @@ export const createContactSchema = zod.object({
     .min(7, "Phone must be at least 7 characters")
     .max(20, "Phone must be at most 20 characters"),
 
-  service: zod.enum(SERVICE),
+  service: zod
+    .union([zod.enum(SERVICE), zod.array(zod.enum(SERVICE))])
+    .transform((val) => (Array.isArray(val) ? val : [val])),
 
   subject: zod
     .string()

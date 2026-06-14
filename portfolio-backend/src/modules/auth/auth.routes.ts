@@ -5,6 +5,8 @@ import { changePasswordSchema, loginAdminSchema } from "./auth.schema";
 import { authMiddleware } from "../../middleware/auth.middleware";
 export const authRouter = Router();
 authRouter.post("/logIn", validate(loginAdminSchema), AuthController.login);
+authRouter.post("/logout", AuthController.login);
+
 authRouter.get(
   "/refresh-token",
   authMiddleware,

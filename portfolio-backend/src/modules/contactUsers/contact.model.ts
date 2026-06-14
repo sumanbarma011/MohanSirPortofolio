@@ -1,5 +1,4 @@
 // models/contact.ts
-import { NextFunction } from "express";
 import mongoose, { Schema, Model } from "mongoose";
 
 import { Document } from "mongoose";
@@ -22,7 +21,7 @@ export interface IContact extends Document {
   name: string;
   email: string;
   phone: string;
-  service: SERVICE;
+  service: SERVICE[];
   subject: string;
   message: string;
   isResponded: boolean;
@@ -80,7 +79,7 @@ const contactSchema: Schema = new Schema({
     maxlength: 10,
   },
   service: {
-    type: String,
+    type: [String],
     required: true,
     enum: Object.values(SERVICE),
   },

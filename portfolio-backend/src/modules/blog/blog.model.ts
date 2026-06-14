@@ -50,14 +50,12 @@ const blogPostSchema: Schema<IBlogPost> = new Schema({
     default: POST_STATUS.DRAFT,
   },
   imageUrl: {
-    type: String,
+    type: [String], // Array of strings (for multiple images)
     required: false,
-    maxlength: 500,
   },
   cloudinaryPublicId: {
-    type: String,
+    type: [String], // Array of strings (for multiple IDs)
     required: false,
-    maxlength: 500,
   },
   views: {
     type: Number,
@@ -77,8 +75,6 @@ const blogPostSchema: Schema<IBlogPost> = new Schema({
     default: Date.now,
   },
 });
-
-// Removed pre('save') hook - handle slug and updatedAt manually in controllers
 
 const BlogPost: Model<IBlogPost> = mongoose.model<IBlogPost>(
   "BlogPost",

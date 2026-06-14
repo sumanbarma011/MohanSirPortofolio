@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
@@ -9,13 +11,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useContactForm, UseContactFormProps } from "../contact.hooks";
 import { SERVICE } from "../contact.types";
+import { useContactStore } from "../contact.store";
+import { ContactSuccessDisplay } from "./ContactSuccessDisplay";
 
-// Define component property interface extending your hook options
 interface ContactFormProps extends UseContactFormProps {
   className?: string;
 }
 
-// Mocking your form fields layout definition inside or outside the file
 const FORM_FIELDS = [
   { id: "name", label: "Full Name", type: "text", placeholder: "John Doe" },
   {
@@ -26,7 +28,6 @@ const FORM_FIELDS = [
   },
 ] as const;
 
-// Framer Motion layout configuration preset passed from your parent view
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
@@ -37,11 +38,32 @@ export const ContactForm: React.FC<ContactFormProps> = ({
   onSuccess,
   onError,
 }) => {
+  const submittedData = useContactStore((state) => state.submittedData);
+  console.log(submittedData);
+
   const { form, isSubmitting, mutationError, handleSubmit } = useContactForm({
-    onSuccess,
+    onSuccess: (data) => {
+      if (onSuccess) onSuccess(data);
+    },
     onError,
   });
 
+  // 2. Conditional render interceptor: If already submitted, swap layout to success mode
+  if (submittedData) {
+    return (
+      <motion.div
+        variants={fadeUpVariants}
+        initial="hidden"
+        animate="show"
+        transition={{ duration: 0.5 }}
+        className={className}
+      >
+        <ContactSuccessDisplay />
+      </motion.div>
+    );
+  }
+
+  // 3. Main interactive form template
   return (
     <motion.div
       variants={fadeUpVariants}
@@ -195,14 +217,22 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.1 }}
             >
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary text-primary-foreground hover:opacity-90 rounded-none h-11 font-medium transition-opacity disabled:bg-gray-400"
-              >
-                {isSubmitting ? "Sending..." : "Send Message"}
-                <Send className="w-4 h-4 ml-2" />
-              </Button>
+              <div className="flex flex-col gap-2">
+                <form.Subscribe
+                  selector={(state) => [state.canSubmit, state.isSubmitting]}
+                >
+                  {([canSubmit, isSubmitting]) => (
+                    <Button
+                      type="submit"
+                      disabled={!canSubmit}
+                      className="w-full bg-primary text-primary-foreground hover:opacity-90 rounded-none h-11 font-medium transition-opacity disabled:bg-gray-400"
+                    >
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                      <Send className="w-4 h-4 ml-2" />
+                    </Button>
+                  )}
+                </form.Subscribe>
+              </div>
             </motion.div>
           </form>
         </CardContent>

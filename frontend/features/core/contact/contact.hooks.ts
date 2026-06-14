@@ -4,6 +4,7 @@ import { createContactSchema, createContactType } from "./contact.schema";
 import { ApiResponse } from "@/lib/global.types";
 import { ContactResponseType } from "./contact.types";
 import { createContactMutationOptions } from "./contact.query.options";
+import { useContactStore } from "./contact.store";
 
 export interface UseContactFormProps {
   onSuccess?: (data: ApiResponse<ContactResponseType>) => void;
@@ -11,35 +12,30 @@ export interface UseContactFormProps {
 }
 
 export const useContactForm = (props?: UseContactFormProps) => {
+  const setSubmittedData = useContactStore((state) => state.setSubmittedData);
+
   const {
-    mutate,
+    mutateAsync,
     isPending,
     error: mutationError,
   } = useMutation(createContactMutationOptions());
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
-      service: [],
-      message: "",
-      phone: "",
-      subject: "",
+      name: "Roshan Pokharel",
+      email: "email@gmail.com",
+      service: ["ADVISORY"],
+      message: "Hello how are you mohan",
+      phone: "9867473181",
+      subject: "Hello",
     } as createContactType,
     validators: {
       onChange: createContactSchema,
     },
     onSubmit: async ({ value }) => {
-      mutate(value, {
-        onSuccess: () => {
-          form.reset();
-        },
-        onError: (err) => {
-          props?.onError?.(
-            err instanceof Error ? err : new Error("Mutation failed"),
-          );
-        },
-      });
+      const responseData = await mutateAsync(value);
+
+      setSubmittedData(responseData.data);
     },
   });
 

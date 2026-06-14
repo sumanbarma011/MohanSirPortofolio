@@ -63,23 +63,24 @@ export default function ContactSection() {
         </motion.div>
 
         {/* Form and Showcase Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch ">
           <motion.div
             variants={scaleInVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="lg:col-span-5 relative overflow-hidden border border-border rounded-lg aspect-square sm:aspect-video md:aspect-auto md:min-h-[450px] w-full"
+            className="lg:col-span-5 relative overflow-hidden border border-border rounded-lg w-full h-full min-h-[400px] max-h-[550px] self-center"
           >
             <Image
               src="https://images.unsplash.com/photo-1714328564923-d4826427c991?w=1000&auto=format&fit=crop&q=80"
               alt="CA Professional"
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover object-top md:object-[center_25%] brightness-[0.35] transition-all duration-300"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover object-center brightness-[0.35] transition-all duration-300"
             />
 
+            {/* Text Layout Overlay Container */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 space-y-4 bg-linear-to-t from-background via-background/40 to-transparent">
               <motion.div
                 transition={{ duration: 0.6 }}

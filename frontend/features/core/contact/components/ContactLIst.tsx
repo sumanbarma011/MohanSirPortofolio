@@ -52,7 +52,7 @@ export const AdminContactDashboard: React.FC = () => {
   // 1. LOADING / SKELETON STATE
   if (isLoading) {
     return (
-      <div className="space-y-6 p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="space-y-6 p-4 md:p-8">
         <div className="space-y-2">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-96" />
@@ -103,7 +103,11 @@ export const AdminContactDashboard: React.FC = () => {
     );
   }
 
-  const contacts = Array.isArray(data) ? data : data ? [data] : [];
+  const contacts = Array.isArray(data?.data)
+    ? data.data
+    : data?.data
+      ? [data.data]
+      : [];
 
   // 3. EMPTY STATE
   if (contacts.length === 0) {
@@ -116,7 +120,7 @@ export const AdminContactDashboard: React.FC = () => {
 
   // 4. MAIN DATA UI RENDER
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-5">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
@@ -176,7 +180,7 @@ export const AdminContactDashboard: React.FC = () => {
                 </CardTitle>
                 <CardDescription className="flex items-center gap-1 text-xs">
                   <Clock className="w-3 h-3 text-muted-foreground" />
-                  {format(new Date(contact.createdAt), "PPP p")}
+                  {format(new Date(contact.createdAt).toISOString(), "PPP p")}
                 </CardDescription>
               </CardHeader>
 

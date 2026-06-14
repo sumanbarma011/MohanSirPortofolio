@@ -168,4 +168,18 @@ export class AuthController {
       });
     },
   );
+  static me = catchAsync(
+    async (req: Request, res: Response<ApiResponse<AdminWithoutPassword>>) => {
+      const { id } = req.user;
+      const user = await Admin.findById({ _id: id }).lean();
+      if (!user) {
+        throw notFound("Admin not found");
+      }
+      res.status(200).json({
+        success: true,
+        message: "User Details loaded successfully",
+        data: user,
+      });
+    },
+  );
 }

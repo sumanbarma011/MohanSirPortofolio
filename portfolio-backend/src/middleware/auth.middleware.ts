@@ -18,11 +18,16 @@ export const authMiddleware = catchAsync(
       throw unauthorized("JWT secret is not configured");
     }
 
-    const { payload } = await verifyAccessToken(token, ENV.JWT_SECRET);
-
-    req.user = payload;
-    console.log(req.user);
-
-    next();
+    try {
+      const { payload } = await verifyAccessToken(token, ENV.JWT_SECRET);
+      req.user = payload;
+      console.log(req.user);
+      next();
+    } catch (error: any) {
+      if (error?.code === "ERR_JWT_EXPIRED" || error?.name === "JWTExpired") {
+        throw unauthorized("JWT expired");
+      }
+      throw error;
+    }
   },
 );

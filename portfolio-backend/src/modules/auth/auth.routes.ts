@@ -12,6 +12,7 @@ authRouter.get(
   authMiddleware,
   AuthController.getNewAccessToken,
 );
+authRouter.get("/me", authMiddleware, AuthController.me);
 authRouter.post(
   "/change-password",
   authMiddleware,

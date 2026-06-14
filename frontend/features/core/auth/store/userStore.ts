@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import { LoginType } from "../auth.schema";
 import { ApiResponse } from "@/lib/global.types";
-import { ApiPost } from "@/providers/axiosInstance";
+import { ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { UserType } from "../auth.types";
 import { ApiPath } from "@/lib/ApiPath";
 import { redirect } from "next/navigation";
@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
 
   logout: async () => {
     try {
-      const res = await ApiPost<ApiResponse<undefined>>(ApiPath.auth.logout);
+      const res = await ApiGet<ApiResponse<undefined>>(ApiPath.auth.logout);
       toast(res.data.message || "Logout succesfully");
     } catch {
       // console.error("Backend logout failed to respond cleanly:", error);

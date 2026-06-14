@@ -3,7 +3,7 @@ import { extractApiError } from "@/lib/utils";
 import axios, { AxiosRequestConfig } from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.Next ?? "http://localhost:5000",
+  baseURL: process.env.Next_PUBLIC_URL ?? "http://localhost:5000",
   withCredentials: true,
 });
 

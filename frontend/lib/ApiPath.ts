@@ -1,0 +1,6 @@
+export const ApiPath = {
+  contact: {
+    create: "/contact/create",
+    read: "/contact/getAll",
+  },
+};

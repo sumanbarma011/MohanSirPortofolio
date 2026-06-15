@@ -9,7 +9,7 @@ authRouter.post("/logout", AuthController.login);
 
 authRouter.get(
   "/refresh-token",
-  authMiddleware,
+  // authMiddleware,
   AuthController.getNewAccessToken,
 );
 authRouter.get("/me", authMiddleware, AuthController.me);

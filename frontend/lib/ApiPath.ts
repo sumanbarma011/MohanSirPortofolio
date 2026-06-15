@@ -6,5 +6,15 @@ export const ApiPath = {
   auth: {
     login: "/auth/login",
     logout: "/auth/logout",
+    me: "/auth/me",
+    refresh: "/auth/refresh-token",
+  },
+  blog: {
+    create: "/blog/create",
+    read: "/blog/getAll",
+    specificBlog: "/blog/get/",
+  },
+  cloudinary: {
+    upload: "/cloudinary/upload",
   },
 };

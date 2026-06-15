@@ -57,14 +57,6 @@ export const ContactSuccessDisplay: React.FC = () => {
             Hajur ko message hami le pai sakyeu. Our team of senior accountants
             will review your submission and connect with you shortly.
           </p>
-          <div className="mt-4 flex justify-center">
-            <Badge
-              variant="outline"
-              className="bg-background text-xs px-3 py-1 font-mono text-muted-foreground"
-            >
-              Reference ID: #{submittedData._id.slice(-8).toUpperCase()}
-            </Badge>
-          </div>
         </Card>
 
         {/* Details Record Breakdown Card */}

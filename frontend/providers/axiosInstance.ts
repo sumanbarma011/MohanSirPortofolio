@@ -1,3 +1,4 @@
+import { ApiPath } from "@/lib/ApiPath";
 import { ApiResponse } from "@/lib/global.types";
 import { extractApiError } from "@/lib/utils";
 import axios, { AxiosRequestConfig } from "axios";
@@ -21,7 +22,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         // 4. Hit your backend refresh endpoint
-        const res = await axios.post("/your-refresh-api-path");
+        const res = await axiosInstance.get(ApiPath.auth.refresh);
 
         // 5. Check if the backend successfully rotated the token
         // (Usually backends return the new token string, adjust to your API payload)

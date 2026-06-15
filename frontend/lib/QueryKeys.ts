@@ -3,4 +3,15 @@ export const queryKeys = {
     create: "Create-Contact",
     read: "Read-Contact",
   },
+  auth: {
+    me: "get-user",
+  },
+  blog: {
+    create: "Create-Blog",
+    read: "Read-Blogs",
+    readSpecific: "read-specific",
+  },
+  cloudinary: {
+    upload: "Upload-Cloudinary",
+  },
 };

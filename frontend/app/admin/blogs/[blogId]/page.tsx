@@ -6,10 +6,14 @@ export default async function Page({
 }: {
   params: Promise<{ blogId: string }>;
 }) {
-  const { blogId } = await params;
-  if (!blogId) {
+  // 1. Await the params object itself
+  const resolvedParams = await params;
+  console.log(resolvedParams);
+  const id = resolvedParams?.blogId;
+
+  if (!id) {
     return notFound();
   }
 
-  return <BlogDetailPage blogId={blogId} />;
+  return <BlogDetailPage blogId={id} />;
 }

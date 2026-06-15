@@ -28,8 +28,8 @@ export function LoginForm({
   const router = useRouter();
   const loginFn = useAuthStore((s) => s.login);
   const defaultValues: LoginType = {
-    email: "admin@gmail.com",
-    password: "Admin123$",
+    email: "suman011@gmail.com",
+    password: "Suman123$",
   };
 
   const form = useForm({

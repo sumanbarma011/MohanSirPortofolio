@@ -35,7 +35,6 @@ export function NavUser({ user }: Props) {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const handleLogout = async () => {
-    console.log("Update it");
     setIsLoggingOut(true);
     try {
       logoutFn();

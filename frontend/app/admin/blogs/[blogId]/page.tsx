@@ -8,7 +8,6 @@ export default async function Page({
 }) {
   // 1. Await the params object itself
   const resolvedParams = await params;
-  console.log(resolvedParams);
   const id = resolvedParams?.blogId;
 
   if (!id) {

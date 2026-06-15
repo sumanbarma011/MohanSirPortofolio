@@ -16,6 +16,10 @@ export const queryKeys = {
   },
   services: {
     get: "services-get-all",
-    create: "-service-create",
+    create: "skills-create",
+  },
+  skills: {
+    get: "skills-get-all",
+    create: "skills-create",
   },
 };

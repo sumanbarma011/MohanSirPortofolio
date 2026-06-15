@@ -4,9 +4,10 @@ import Image from "next/image";
 
 // Reusable configurations for Profile Stats and Features List
 const PROFILE_STATS = [
-  { label: "Years Experience", value: "10+" },
+  { label: "Years Experience", value: "5+" },
   { label: "Clients Served", value: "300+" },
   { label: "Industries", value: "20+" },
+  { label: "Tax Compliance", value: "100%" },
 ];
 
 const FEATURES = [

@@ -194,7 +194,7 @@ export default function BlogSection() {
                     transition={{ duration: 0.2 }}
                   >
                     <Link
-                      href={`/blogs/${blog.Slug}`}
+                      href={`/blogs/${blog.id}`}
                       className="inline-flex items-center gap-2 text-primary font-medium group"
                     >
                       Read Article

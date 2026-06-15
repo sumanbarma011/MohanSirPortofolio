@@ -2,14 +2,17 @@ import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Blog } from "./blog";
+import { useAuthStore } from "../../auth/store/userStore";
 
 export default function BlogDetailPage({ blogId }: { blogId: string }) {
+  const isLoggedIn = useAuthStore.getState().isAuthenticated;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-5xl mx-auto px-4 py-12">
         {/* Back Button */}
         <Link
-          href="/admin/blogs"
+          href={isLoggedIn ? "/admin/blogs" : "/blogs"}
           className="inline-flex items-center gap-2 text-foreground font-semibold hover:underline mb-8"
         >
           <svg

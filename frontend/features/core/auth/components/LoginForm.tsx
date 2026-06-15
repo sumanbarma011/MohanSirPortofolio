@@ -37,7 +37,7 @@ export function LoginForm({
     onSubmit: async ({ value }) => {
       try {
         const resData = await loginFn(value);
-        console.log(resData);
+        // console.log(resData);
         toast("Login succesful");
         if (resData.role === "ADMIN") {
           router.push("/admin/dashboard");

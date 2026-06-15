@@ -21,4 +21,8 @@ export const ApiPath = {
     getAll: "/service/getAll",
     create: "/service/create",
   },
+  skills: {
+    get: "/sq/getAll",
+    create: "/sq/create",
+  },
 };

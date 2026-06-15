@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, PhoneCallIcon, Menu, X } from "lucide-react";
+import BookConsultationButton from "../BookConsultationButton";
+import { ThemeToggle } from "../ThemeToggle";
 
 const NAV_ITEMS = [
   { name: "Home", href: "#" },
@@ -66,7 +68,7 @@ export default function Header() {
             transition={{ duration: 0.4 }}
           >
             <Link
-              href="#top"
+              href="/"
               className="flex items-center gap-1 text-2xl font-bold tracking-tight select-none hover:opacity-90 transition-opacity"
             >
               <span id="top" className="text-foreground/90 font-light">
@@ -170,18 +172,13 @@ export default function Header() {
               <PhoneCallIcon className="w-5 h-5" />
             </motion.a>
 
+            {/* <ThemeToggle /> */}
+
             <motion.div
               whileHover={{ scale: 1.02, filter: "brightness(1.10)" }}
               className="md:block hidden"
             >
-              <Button
-                asChild
-                className="rounded-md bg-primary text-primary-foreground font-semibold px-6 py-2.5 shadow-sm text-[14px]"
-              >
-                <Link href="/#contact" className="inline-block w-full h-full">
-                  Book Consultation
-                </Link>
-              </Button>
+              <BookConsultationButton />
             </motion.div>
             {/* Hamburger Button Container  */}
             <button

@@ -18,24 +18,24 @@ export const areaOfWorkRouter = Router();
 
 // Create area (require auth)
 areaOfWorkRouter.post(
-  "/areas-of-work",
+  "/create",
   authMiddleware,
   validate(createAreaOfWorkSchema),
   createAreaOfWorkController,
 );
 
 // Get all areas (no auth)
-areaOfWorkRouter.get("/areas-of-work", getAllAreasOfWorkController);
+areaOfWorkRouter.get("/getAll", getAllAreasOfWorkController);
 
 // Get active areas only (no auth)
-areaOfWorkRouter.get("/areas-of-work/active", getActiveAreasOfWorkController);
+areaOfWorkRouter.get("/active", getActiveAreasOfWorkController);
 
 // Get area by ID (no auth)
-areaOfWorkRouter.get("/areas-of-work/:id", getAreaOfWorkByIdController);
+areaOfWorkRouter.get("/get/:id", getAreaOfWorkByIdController);
 
 // Update area (require auth)
 areaOfWorkRouter.put(
-  "/areas-of-work/:id",
+  "/update/:id",
   authMiddleware,
   validate(updateAreaOfWorkSchema),
   updateAreaOfWorkController,
@@ -43,7 +43,7 @@ areaOfWorkRouter.put(
 
 // Delete area (require auth)
 areaOfWorkRouter.delete(
-  "/areas-of-work/:id",
+  "/delete/:id",
   authMiddleware,
   deleteAreaOfWorkController,
 );

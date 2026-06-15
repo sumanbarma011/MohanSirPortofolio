@@ -15,28 +15,28 @@ export const companyRouter = Router();
 
 // Create company (require auth)
 companyRouter.post(
-  "/companies",
+  "/create",
   authMiddleware,
   validate(createCompanySchema),
   createCompanyController,
 );
 
 // Get all companies (no auth)
-companyRouter.get("/companies", getAllCompaniesController);
+companyRouter.get("/getAll", getAllCompaniesController);
 
 // Get active companies only (no auth)
-companyRouter.get("/companies/active", getActiveCompaniesController);
+companyRouter.get("/get/active", getActiveCompaniesController);
 
 // Get company by ID (no auth)
-companyRouter.get("/companies/:id", getCompanyByIdController);
+companyRouter.get("/get/:id", getCompanyByIdController);
 
 // Update company (require auth)
 companyRouter.put(
-  "/companies/:id",
+  "/update/:id",
   authMiddleware,
   validate(updateCompanySchema),
   updateCompanyController,
 );
 
 // Delete company (require auth)
-companyRouter.delete("/companies/:id", authMiddleware, deleteCompanyController);
+companyRouter.delete("/delete/:id", authMiddleware, deleteCompanyController);

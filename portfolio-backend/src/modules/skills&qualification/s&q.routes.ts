@@ -27,24 +27,24 @@ const skRouter = express.Router();
 // ==================== SKILL ROUTES ====================
 
 // Public Routes (No Auth Required)
-skRouter.get("/skills", getAllSkills); // ---------------------- done
-skRouter.get("/skills/featured", getFeaturedSkills); // ---------------------- done
-skRouter.get("/skills/:id", getSkillById); // ---------------------- done
+skRouter.get("/getAll", getAllSkills); // ---------------------- done
+skRouter.get("/getAll/featured", getFeaturedSkills); // ---------------------- done
+skRouter.get("/get/:id", getSkillById); // ---------------------- done
 
 // Admin Routes (Auth Required)
 skRouter.post(
-  "/skills",
+  "/create",
   authMiddleware,
   validate(createSkillSchema),
   createSkill,
 ); // ----------------------------------- checked
 skRouter.put(
-  "/skills/:id",
+  "/update/:id",
   authMiddleware,
   validate(updateSkillSchema),
   updateSkill,
 ); // checked -----------------------------------
-skRouter.delete("/skills/:id", authMiddleware, deleteSkill); // ----------------------------------- checked
+skRouter.delete("/delete/:id", authMiddleware, deleteSkill); // ----------------------------------- checked
 
 // ==================== QUALIFICATION ROUTES ====================
 

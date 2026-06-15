@@ -3,16 +3,6 @@ import mongoose, { Schema, Model, Document } from "mongoose";
 
 // ==================== SKILLS MODEL ====================
 
-export enum CATEGORY {
-  TAXATION = "TAXATION",
-  AUDIT = "AUDIT",
-  ADVISIORY = "ADVISIORY",
-  FINANCIAL_PLANNING = "FINANCIAL_PLANNING",
-  LAW = "LAW",
-  SOFTWARE = "SOFTWARE",
-  OTHER = "OTHER",
-}
-
 export enum LEVEL {
   BEGINNER = "BEGINNER",
   INTERMEDIATE = "INTERMEDIATE",
@@ -21,7 +11,7 @@ export enum LEVEL {
 }
 export interface ISkill extends Document {
   name: string;
-  category: CATEGORY;
+
   description?: string;
   level?: LEVEL;
   yearsOfExperience?: number;
@@ -37,12 +27,7 @@ const skillSchema: Schema = new Schema({
     minlength: 2,
     maxlength: 100,
   },
-  category: {
-    type: String,
-    required: true,
-    trim: true,
-    enum: Object.values(CATEGORY),
-  },
+
   description: {
     type: String,
     required: false,

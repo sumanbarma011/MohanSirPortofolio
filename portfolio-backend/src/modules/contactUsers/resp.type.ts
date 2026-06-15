@@ -5,7 +5,7 @@ export type createResponseType = {
   name: string;
   email: string;
   phone: string;
-  service: string | string[];
+  service: any[];
   subject: string;
   message: string;
   isResponded: boolean;

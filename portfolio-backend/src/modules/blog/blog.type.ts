@@ -3,7 +3,7 @@ import { ApiResponse } from "../../utils/types/app.response.type";
 export interface CreateBlogDto {
   title: string;
   content: string;
-  author: string;
+
   images: {
     url: string;
     cloudinaryId: string;
@@ -13,7 +13,7 @@ export interface CreateBlogDto {
 export interface UpdateBlogDto {
   title?: string;
   content?: string;
-  author?: string;
+
   images?: {
     url: string;
     cloudinaryId: string;

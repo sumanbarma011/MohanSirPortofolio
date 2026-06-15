@@ -78,14 +78,14 @@ export const updateSkill = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const value = req.params.id;
+  const value = req.body;
 
   const skill = await Skill.findByIdAndUpdate(
     req.params.id,
     value as UpdateSkillInput,
     { new: true },
   );
-
+  console.log(skill);
   if (!skill) {
     throw notFound("Skill");
   }

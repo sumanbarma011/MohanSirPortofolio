@@ -28,15 +28,16 @@ export const createBlogController = catchAsync(
     console.log("------------");
     // 1. Validate body
     const parsed = createBlogSchema.parse(req.body);
-
+    const adminId = req.user.id;
     // 2. Create blog
-    const blog = await BlogModel.create(parsed);
+    const blog = await BlogModel.create({ ...parsed, author: adminId });
+    const populatedBlog = await BlogModel.findById(blog._id).populate("author");
 
     // 3. Response
     const response: BlogGetResponse = {
       success: true,
       message: "Blog created successfully",
-      data: blogToResponse(blog),
+      data: blogToResponse(populatedBlog),
     };
 
     res.status(201).json(response);
@@ -46,7 +47,9 @@ export const createBlogController = catchAsync(
 export const getAllBlogsController = catchAsync(
   async (_req: Request, res: Response) => {
     // 1. Fetch all blogs
-    const blogs = await BlogModel.find().sort({ createdAt: -1 });
+    const blogs = await BlogModel.find()
+      .populate("author") // ← Add this
+      .sort({ createdAt: -1 });
 
     // 2. Response
     const response: BlogListResponse = {
@@ -65,7 +68,7 @@ export const getBlogByIdController = catchAsync(
     const { id } = req.params;
 
     // 2. Find blog
-    const blog = await BlogModel.findById(id);
+    const blog = await BlogModel.findById(id).populate("author"); // ← Add this
 
     if (!blog) {
       throw notFound("Blog not found");
@@ -88,7 +91,7 @@ export const getBlogBySlugController = catchAsync(
     const { slug } = req.params;
 
     // 2. Find blog
-    const blog = await BlogModel.findOne({ Slug: slug });
+    const blog = await BlogModel.findOne({ Slug: slug }).populate("author");
 
     if (!blog) {
       throw notFound("Blog not found");
@@ -115,7 +118,7 @@ export const updateBlogController = catchAsync(
     const blog = await BlogModel.findByIdAndUpdate(id, parsed, {
       new: true,
       runValidators: true,
-    });
+    }).populate("author");
 
     if (!blog) {
       throw notFound("Blog not found");

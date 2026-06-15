@@ -9,6 +9,7 @@ import skRouter from "./modules/skills&qualification/s&q.routes";
 import contactRouter from "./modules/contactUsers/contact.routes";
 import { blogRouter } from "./modules/blog/blog.routes";
 import { cloudinaryRouter } from "./modules/cloudinary/cloudinary.routes";
+import { serviceRouter } from "./modules/service/service.routes";
 export const createApp = (): express.Express => {
   const app = express();
 
@@ -48,6 +49,7 @@ export const createApp = (): express.Express => {
   app.use("/contact", contactRouter);
   app.use("/blog", blogRouter);
   app.use("/cloudinary", cloudinaryRouter);
+  app.use("/service", serviceRouter);
   app.use(notFound);
 
   // GLOBAL ERROR MIDDLEWARE

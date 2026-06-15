@@ -1,7 +1,6 @@
 // schemas/contact.ts
 import zod from "zod";
-import { SERVICE } from "./contact.model";
-
+import { isValidObjectId } from "mongoose";
 // Create Contact Schema (Public - Viewers)
 export const createContactSchema = zod.object({
   name: zod
@@ -21,9 +20,18 @@ export const createContactSchema = zod.object({
     .max(20, "Phone must be at most 20 characters"),
 
   service: zod
-    .union([zod.enum(SERVICE), zod.array(zod.enum(SERVICE))])
-    .transform((val) => (Array.isArray(val) ? val : [val])),
+    .union([zod.string(), zod.array(zod.string())])
+    .transform((val) => {
+      const serviceArray = Array.isArray(val) ? val : [val];
 
+      for (const id of serviceArray) {
+        if (!id || typeof id !== "string" || !isValidObjectId(id)) {
+          throw new Error("Invalid Service ID");
+        }
+      }
+
+      return serviceArray;
+    }),
   subject: zod
     .string()
     .min(5, "Subject must be at least 5 characters")
@@ -44,7 +52,7 @@ export const updateContactSchema = zod.object({
 
 // Get Contacts Query Schema (Admin Filtering)
 export const getContactsQuerySchema = zod.object({
-  service: zod.enum(SERVICE).optional(),
+  service: zod.string().uuid().optional(),
   status: zod.enum(["NEW", "IN_PROGRESS", "RESOLVED", "ARCHIVED"]).optional(),
   isResponded: zod.boolean().optional(),
   limit: zod.number().int().positive().max(100).optional().default(20),

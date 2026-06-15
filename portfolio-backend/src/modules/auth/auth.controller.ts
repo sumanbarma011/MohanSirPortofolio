@@ -83,15 +83,22 @@ export class AuthController {
   static updateAuth = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
     const body = req.body as UpdateAdmin;
+    const validatedBody = body;
+    const updateData = await Admin.findByIdAndUpdate(id, validatedBody, {
+      new: true,
+      runValidators: true,
+    });
 
-    const updateData = await Admin.findByIdAndUpdate(id, body, { new: true });
     if (!updateData) {
-      throw internalError("Failed to update admin");
+      throw notFound("Admin not found");
     }
-    const response: ApiResponse<UpdateAdmin> = {
+
+    const { hashedPassword, ...adminData } = updateData.toObject();
+
+    const response: ApiResponse<AdminWithoutPassword> = {
       success: true,
       message: "Admin updated successfully",
-      data: updateData,
+      data: adminData,
     };
     res.status(200).json(response);
   });

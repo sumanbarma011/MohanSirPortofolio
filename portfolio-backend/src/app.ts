@@ -10,6 +10,8 @@ import contactRouter from "./modules/contactUsers/contact.routes";
 import { blogRouter } from "./modules/blog/blog.routes";
 import { cloudinaryRouter } from "./modules/cloudinary/cloudinary.routes";
 import { serviceRouter } from "./modules/service/service.routes";
+import { areaOfWorkRouter } from "./modules/aow/area.of.work.routes";
+import { companyRouter } from "./modules/company/company.routes";
 export const createApp = (): express.Express => {
   const app = express();
 
@@ -47,7 +49,9 @@ export const createApp = (): express.Express => {
   app.use("/auth", authRouter);
   app.use("/sq", skRouter);
   app.use("/contact", contactRouter);
+  app.use("/company", companyRouter);
   app.use("/blog", blogRouter);
+  app.use("/aow", areaOfWorkRouter);
   app.use("/cloudinary", cloudinaryRouter);
   app.use("/service", serviceRouter);
   app.use(notFound);

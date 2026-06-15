@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createCompanySchema, updateCompanySchema } from "./company.schema";
+import { updateCompanySchema } from "./company.schema";
 import { CompanyModel } from "./company.model";
 import { catchAsync } from "../../utils/async.handler";
 import { notFound } from "../../utils/types/app.error";
@@ -26,7 +26,7 @@ const companyToResponse = (company: any): CompanyResponse => {
 export const createCompanyController = catchAsync(
   async (req: Request, res: Response) => {
     // 1. Validate body
-    const parsed = createCompanySchema.parse(req.body);
+    const parsed = req.body;
 
     // 2. Create company
     const company = await CompanyModel.create(parsed);

@@ -1,6 +1,6 @@
 // schemas/skillsQualifications.js
 import zod from "zod";
-import { ACADEMICTYPE, CATEGORY, LEVEL } from "./skills.model";
+import { ACADEMICTYPE, LEVEL } from "./skills.model";
 
 // ==================== SKILL SCHEMAS ====================
 
@@ -11,18 +11,13 @@ const createSkillSchema = zod.object({
     .min(2, "Skill name must be at least 2 characters")
     .max(100, "Skill name must be at most 100 characters"),
 
-  category: zod.enum(CATEGORY),
-
   description: zod
     .string()
     .max(500, "Description must be at most 500 characters")
     .optional()
     .or(zod.literal("")),
 
-  level: zod
-    .enum(LEVEL)
-    .optional()
-    .default(LEVEL.INTERMEDIATE),
+  level: zod.enum(LEVEL).optional().default(LEVEL.INTERMEDIATE),
 
   yearsOfExperience: zod
     .number()
@@ -36,25 +31,16 @@ const createSkillSchema = zod.object({
 // Update Skill Schema (Admin)
 const updateSkillSchema = zod.object({
   name: zod.string().min(2).max(100).optional(),
-  category: zod
-    .enum(CATEGORY)
-    .optional(),
+
   description: zod.string().max(500).optional(),
-  level: zod
-    .enum(LEVEL)
-    .optional(),
+  level: zod.enum(LEVEL).optional(),
   yearsOfExperience: zod.number().min(0).max(50).optional(),
   isFeatured: zod.boolean().optional(),
 });
 
 // Get Skills Query Schema (Filtering)
 const getSkillsQuerySchema = zod.object({
-  category: zod
-    .enum(CATEGORY)
-    .optional(),
-  level: zod
-    .enum(LEVEL)
-    .optional(),
+  level: zod.enum(LEVEL).optional(),
   isFeatured: zod.boolean().optional(),
   limit: zod.number().int().positive().max(100).optional().default(20),
   page: zod.number().int().positive().optional().default(1),
@@ -123,17 +109,13 @@ const updateQualificationSchema = zod.object({
   certificationNumber: zod.string().max(100).optional(),
   issuingAuthority: zod.string().max(200).optional(),
   description: zod.string().max(500).optional(),
-  type: zod
-    .enum(ACADEMICTYPE)
-    .optional(),
+  type: zod.enum(ACADEMICTYPE).optional(),
   isFeatured: zod.boolean().optional(),
 });
 
 // Get Qualifications Query Schema (Filtering)
 const getQualificationsQuerySchema = zod.object({
-  type: zod
-    .enum(ACADEMICTYPE)
-    .optional(),
+  type: zod.enum(ACADEMICTYPE).optional(),
   isFeatured: zod.boolean().optional(),
   limit: zod.number().int().positive().max(100).optional().default(20),
   page: zod.number().int().positive().optional().default(1),

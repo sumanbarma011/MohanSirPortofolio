@@ -10,6 +10,7 @@ import {
 
 import { catchAsync } from "../../utils/async.handler";
 import { badRequest, notFound } from "../../utils/types/app.error";
+import { ApiResponse } from "../../utils/types/app.response.type";
 
 // ==================== SKILL CRUD ====================
 
@@ -22,11 +23,12 @@ export const createSkill = catchAsync(
     if (!skill) {
       throw badRequest("Cannot create skill");
     }
-    res.status(201).json({
+    const response: ApiResponse<CreateSkillInput> = {
       success: true,
       message: "Skill created successfully",
       data: skill,
-    });
+    };
+    res.status(201).json(response);
   },
 );
 

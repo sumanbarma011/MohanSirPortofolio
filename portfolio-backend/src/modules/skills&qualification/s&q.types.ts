@@ -1,12 +1,11 @@
 // types/skillsQualifications.ts
 
-import { ACADEMICTYPE, CATEGORY, LEVEL } from "./skills.model";
+import { ACADEMICTYPE, LEVEL } from "./skills.model";
 
 // ==================== SKILL INTERFACE ====================
 
 export interface CreateSkillInput {
   name: string;
-  category: CATEGORY;
   description?: string;
   level?: LEVEL;
   yearsOfExperience?: number;
@@ -15,7 +14,7 @@ export interface CreateSkillInput {
 
 export interface UpdateSkillInput {
   name?: string;
-  category?: CATEGORY;
+
   description?: string;
   level?: LEVEL;
   yearsOfExperience?: number;
@@ -23,7 +22,6 @@ export interface UpdateSkillInput {
 }
 
 export interface GetSkillsQueryInput {
-  category?: CATEGORY;
   level?: LEVEL;
   isFeatured?: boolean;
   limit?: number;

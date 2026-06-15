@@ -13,10 +13,9 @@ export const createCompanySchema = z.object({
     .trim(),
   logo: z
     .object({
-      url: z.string().url("Invalid URL format"),
+      url: z.string().url(),
       cloudinaryId: z.string().min(1, "Cloudinary ID is required"),
     })
-    .nullable()
     .optional(),
 });
 
@@ -35,10 +34,9 @@ export const updateCompanySchema = z.object({
     .optional(),
   logo: z
     .object({
-      url: z.string().url("Invalid URL format"),
-      cloudinaryId: z.string().min(1, "Cloudinary ID is required"),
+      url: z.string().url(),
+      cloudinaryId: z.string().min(1),
     })
-    .nullable()
     .optional(),
   isActive: z.boolean().optional(),
 });

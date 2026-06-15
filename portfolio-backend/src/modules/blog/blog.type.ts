@@ -1,24 +1,24 @@
 import { ApiResponse } from "../../utils/types/app.response.type";
 
-export interface CreateBlogDto {
-  title: string;
-  content: string;
+// export interface CreateBlogDto {
+//   title: string;
+//   content: string;
 
-  images: {
-    url: string;
-    cloudinaryId: string;
-  }[];
-}
+//   images: {
+//     url: string;
+//     cloudinaryId: string;
+//   }[];
+// }
 
-export interface UpdateBlogDto {
-  title?: string;
-  content?: string;
+// export interface UpdateBlogDto {
+//   title?: string;
+//   content?: string;
 
-  images?: {
-    url: string;
-    cloudinaryId: string;
-  }[];
-}
+//   images?: {
+//     url: string;
+//     cloudinaryId: string;
+//   }[];
+// }
 
 export interface BlogResponse {
   id: string;

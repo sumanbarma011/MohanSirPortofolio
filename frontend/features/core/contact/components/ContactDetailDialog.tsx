@@ -103,8 +103,10 @@ export const ContactDetailDialog: React.FC<ContactDetailDialogProps> = ({
               <Label className="text-xs text-muted-foreground flex items-center gap-1">
                 <Briefcase className="w-3 h-3" /> Requested Service
               </Label>
-              <p className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                {contact.service}
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                {Array.isArray(contact.service)
+                  ? contact.service.map((srv) => String(srv.name)).join(", ")
+                  : String(contact.service || "").replace(/_/g, " ")}
               </p>
             </div>
           </div>

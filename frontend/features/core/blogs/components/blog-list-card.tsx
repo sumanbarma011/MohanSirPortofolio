@@ -53,7 +53,7 @@ export function BlogListCard({ blog }: BlogListCardProps) {
           {formatDate(blog.createdAt)}
         </time>
 
-        <h2 className="text-2xl font-bold text-foreground mt-3 mb-3 line-clamp-2">
+        <h2 className="text-2xl  font-bold text-foreground mt-3 mb-3 line-clamp-1">
           {blog.title}
         </h2>
 

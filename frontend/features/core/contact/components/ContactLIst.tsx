@@ -202,9 +202,13 @@ export const AdminContactDashboard: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2 truncate border-t pt-1.5 mt-1.5 border-border/60">
                     <Briefcase className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <span className="text-xs font-semibold uppercase">
-                      {contact.service}
-                    </span>
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                      {Array.isArray(contact.service)
+                        ? contact.service
+                            .map((srv) => String(srv.name))
+                            .join(", ")
+                        : String(contact.service || "").replace(/_/g, " ")}
+                    </p>
                   </div>
                 </div>
 

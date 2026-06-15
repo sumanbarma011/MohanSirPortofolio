@@ -60,7 +60,7 @@ export class AuthController {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 15,
         path: "/",
       });
       res.cookie("refreshToken", refreshToken, {
@@ -134,7 +134,7 @@ export class AuthController {
       httpOnly: true,
       sameSite: "none",
       secure: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+       maxAge: 1000 * 60 * 15,
       path: "/",
     });
     const response: ApiResponse<{ accessToken: string }> = {

@@ -31,7 +31,7 @@ export async function seedAdmin() {
       name: isValid.data.name,
       role: isValid.data.role,
       isActive: isValid.data.isActive,
-      image: isValid.data.image ?? null,
+      image: isValid.data.images ?? null,
       hashedPassword: await bcrypt.hash(isValid.data.hashedPassword, 12),
     });
     await admin.save();

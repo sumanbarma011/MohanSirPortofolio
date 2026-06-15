@@ -15,7 +15,6 @@ import { catchAsync } from "../../utils/async.handler";
 export const createContact = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
     const value = req.body;
-
     const contact = new Contact(value as CreateContactInput);
     contact.status = STATUS.NEW;
     contact.isResponded = false;
@@ -27,6 +26,45 @@ export const createContact = catchAsync(
     if (!populatedContact) {
       throw notFound("Contact not found after creation");
     }
+    //   const html = `
+    //   <!DOCTYPE html>
+    //   <html>
+    //   <head>
+    //     <style>
+    //       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    //       .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    //       .header { background: #4CAF50; color: white; padding: 20px; text-align: center; }
+    //       .content { padding: 20px; }
+    //       .button { display: inline-block; padding: 12px 24px; background: #4CAF50; color: white; text-decoration: none; margin: 10px 0; }
+    //       .footer { text-align: center; padding: 20px; color: #777; font-size: 12px; }
+    //     </style>
+    //   </head>
+    //   <body>
+    //     <div class="container">
+    //       <div class="header">
+    //         <h1>Thank You for Contacting Us!</h1>
+    //       </div>
+    //       <div class="content">
+    //         <p>Dear ${contact.name},</p>
+    //         <p>Thank you for reaching out to us regarding <strong>${contact.subject}</strong>.</p>
+    //         <p>We have received your message and our team will review it shortly. We aim to respond within 24-48 hours.</p>
+    //         <p>If you have any urgent concerns, feel free to call us at +91-9876543210.</p>
+    //         <a href="https://yourwebsite.com/contact" class="button">Visit Our Contact Page</a>
+    //       </div>
+    //       <div class="footer">
+    //         <p>Best regards,<br>Your CA Portfolio Team</p>
+    //         <p>This is an automated confirmation email</p>
+    //       </div>
+    //     </div>
+    //   </body>
+    //   </html>
+    // `;
+    // await sendEmail({
+    //   to: value.email,
+    //   html,
+    //   subject: `Thank You for Contacting Us - ${contact.subject}`,
+    //   text: `Dear ${contact.name}, Thank you for reaching out to us regarding ${contact.subject}. We have received your message and will respond within 24-48 hours.`,
+    // });
     const apiResponse: ApiResponse<createResponseType> = {
       success: true,
       message: "Contact form submitted successfully",

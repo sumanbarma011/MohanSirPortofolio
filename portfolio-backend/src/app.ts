@@ -31,8 +31,14 @@ export const createApp = (): express.Express => {
   };
 
   // ALLOW URLS "*" allows every frontend domains
-
-  app.use(cors({ origin: process.env.CORS, credentials: true }));
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGINS ?? "http://localhost:5173",
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
+    }),
+  );
 
   // ALLOW JSON AND FORM DATA
   app.use(express.json());

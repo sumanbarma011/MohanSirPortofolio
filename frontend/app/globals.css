@@ -6,6 +6,81 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Base — warm alabaster/cream, avoids the sterile blinding white */
+  --background: oklch(0.98 0.006 75);
+  --foreground: oklch(0.15 0.015 255);
+
+  /* Cards — pure white to pop against the warm alabaster base */
+  --card: oklch(1.0 0 0);
+  --card-foreground: oklch(0.15 0.015 255);
+
+  /* Popovers */
+  --popover: oklch(1.0 0 0);
+  --popover-foreground: oklch(0.15 0.015 255);
+
+  /* Primary — the same restrained gold, signals prestige and trust */
+  --primary: oklch(0.70 0.13 75); /* Slight chroma/lightness tweak for text legibility on light backgrounds */
+  --primary-foreground: oklch(0.98 0.006 75);
+
+  /* Secondary — a soft cream-taupe that bridges the white and gold */
+  --secondary: oklch(0.92 0.02 75);
+  --secondary-foreground: oklch(0.25 0.02 75);
+
+  /* Muted */
+  --muted: oklch(0.95 0.01 75);
+  --muted-foreground: oklch(0.45 0.015 75);
+
+  /* Accent — a slightly more vibrant gold for crisp hover contrast on light surfaces */
+  --accent: oklch(0.65 0.14 75);
+  --accent-foreground: oklch(1.0 0 0);
+
+  /* Danger — balanced red for light mode */
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.98 0.005 25);
+
+  /* Inputs & Borders — subtle warm gray/gold borders */
+  --border: oklch(0.88 0.015 75);
+  --input: oklch(0.88 0.015 75);
+  --ring: oklch(0.70 0.13 75);
+
+  /* Charts — optimized for light mode backgrounds */
+  --chart-1: oklch(0.70 0.13 75);   /* prestige gold */
+  --chart-2: oklch(0.35 0.08 250);  /* deep navy/steel blue for contrast */
+  --chart-3: oklch(0.55 0.09 70);   /* deep warm tan */
+  --chart-4: oklch(0.45 0.04 240);  /* dark muted slate */
+  --chart-5: oklch(0.80 0.08 85);   /* soft gold/amber */
+
+  /* Sidebar — elegant cream-to-white paneling */
+  --sidebar: oklch(0.96 0.01 75);
+  --sidebar-foreground: oklch(0.15 0.015 255);
+  --sidebar-primary: oklch(0.70 0.13 75);
+  --sidebar-primary-foreground: oklch(1.0 0 0);
+  --sidebar-accent: oklch(0.92 0.02 75);
+  --sidebar-accent-foreground: oklch(0.25 0.02 75);
+  --sidebar-border: oklch(0.88 0.015 75);
+  --sidebar-ring: oklch(0.70 0.13 75);
+
+  /* Keep typography, tracking, and spacing mirrored from your dark mode */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: "Roboto Mono", monospace;
+  --radius: 1rem;
+
+  /* Shadows slightly softened for light mode so they don't look dirty */
+  --shadow-2xs: 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow-xs: 0 1px 3px rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 2px 6px rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 10px rgb(120 110 90 / 0.06);
+  --shadow-md: 0 8px 20px rgb(120 110 90 / 0.08);
+  --shadow-lg: 0 12px 30px rgb(120 110 90 / 0.10);
+  --shadow-xl: 0 20px 50px rgb(120 110 90 / 0.12);
+  --shadow-2xl: 0 30px 70px rgb(120 110 90 / 0.15);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
 
   /* Base — deep midnight navy, feels authoritative without being harsh */
   --background: oklch(0.14 0.025 255);
@@ -81,33 +156,81 @@
 
   --tracking-normal: 0em;
   --spacing: 0.25rem;
-}
+} 
 
-.dark {
-  --background: oklch(0.10 0.025 258);
-  --foreground: oklch(0.96 0.005 240);
+.light {
+  /* Base — warm alabaster/cream, avoids the sterile blinding white */
+  --background: oklch(0.98 0.006 75);
+  --foreground: oklch(0.15 0.015 255);
 
-  --card: oklch(0.15 0.022 256);
-  --card-foreground: oklch(0.96 0.005 240);
+  /* Cards — pure white to pop against the warm alabaster base */
+  --card: oklch(1.0 0 0);
+  --card-foreground: oklch(0.15 0.015 255);
 
-  --popover: oklch(0.15 0.022 256);
-  --popover-foreground: oklch(0.96 0.005 240);
+  /* Popovers */
+  --popover: oklch(1.0 0 0);
+  --popover-foreground: oklch(0.15 0.015 255);
 
-  --primary: oklch(0.75 0.14 75);
-  --primary-foreground: oklch(0.10 0.02 260);
+  /* Primary — the same restrained gold, signals prestige and trust */
+  --primary: oklch(0.70 0.13 75); /* Slight chroma/lightness tweak for text legibility on light backgrounds */
+  --primary-foreground: oklch(0.98 0.006 75);
 
-  --secondary: oklch(0.48 0.10 250);
-  --secondary-foreground: oklch(0.96 0.005 240);
+  /* Secondary — a soft cream-taupe that bridges the white and gold */
+  --secondary: oklch(0.92 0.02 75);
+  --secondary-foreground: oklch(0.25 0.02 75);
 
-  --muted: oklch(0.20 0.018 255);
-  --muted-foreground: oklch(0.64 0.01 240);
+  /* Muted */
+  --muted: oklch(0.95 0.01 75);
+  --muted-foreground: oklch(0.45 0.015 75);
 
-  --accent: oklch(0.68 0.11 75);
-  --accent-foreground: oklch(0.10 0.02 260);
+  /* Accent — a slightly more vibrant gold for crisp hover contrast on light surfaces */
+  --accent: oklch(0.65 0.14 75);
+  --accent-foreground: oklch(1.0 0 0);
 
-  --border: oklch(0.24 0.02 250);
-  --input: oklch(0.24 0.02 250);
-  --ring: oklch(0.75 0.14 75);
+  /* Danger — balanced red for light mode */
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.98 0.005 25);
+
+  /* Inputs & Borders — subtle warm gray/gold borders */
+  --border: oklch(0.88 0.015 75);
+  --input: oklch(0.88 0.015 75);
+  --ring: oklch(0.70 0.13 75);
+
+  /* Charts — optimized for light mode backgrounds */
+  --chart-1: oklch(0.70 0.13 75);   /* prestige gold */
+  --chart-2: oklch(0.35 0.08 250);  /* deep navy/steel blue for contrast */
+  --chart-3: oklch(0.55 0.09 70);   /* deep warm tan */
+  --chart-4: oklch(0.45 0.04 240);  /* dark muted slate */
+  --chart-5: oklch(0.80 0.08 85);   /* soft gold/amber */
+
+  /* Sidebar — elegant cream-to-white paneling */
+  --sidebar: oklch(0.96 0.01 75);
+  --sidebar-foreground: oklch(0.15 0.015 255);
+  --sidebar-primary: oklch(0.70 0.13 75);
+  --sidebar-primary-foreground: oklch(1.0 0 0);
+  --sidebar-accent: oklch(0.92 0.02 75);
+  --sidebar-accent-foreground: oklch(0.25 0.02 75);
+  --sidebar-border: oklch(0.88 0.015 75);
+  --sidebar-ring: oklch(0.70 0.13 75);
+
+  /* Keep typography, tracking, and spacing mirrored from your dark mode */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: "Roboto Mono", monospace;
+  --radius: 1rem;
+
+  /* Shadows slightly softened for light mode so they don't look dirty */
+  --shadow-2xs: 0 1px 2px rgb(0 0 0 / 0.03);
+  --shadow-xs: 0 1px 3px rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 2px 6px rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 10px rgb(120 110 90 / 0.06);
+  --shadow-md: 0 8px 20px rgb(120 110 90 / 0.08);
+  --shadow-lg: 0 12px 30px rgb(120 110 90 / 0.10);
+  --shadow-xl: 0 20px 50px rgb(120 110 90 / 0.12);
+  --shadow-2xl: 0 30px 70px rgb(120 110 90 / 0.15);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
 }
 
 @theme inline {

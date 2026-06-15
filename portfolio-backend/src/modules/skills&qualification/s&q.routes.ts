@@ -37,14 +37,14 @@ skRouter.post(
   authMiddleware,
   validate(createSkillSchema),
   createSkill,
-); // ----------------------------------- done
+); // ----------------------------------- checked
 skRouter.put(
   "/skills/:id",
   authMiddleware,
   validate(updateSkillSchema),
   updateSkill,
-); // ----------------------------------- done
-skRouter.delete("/skills/:id", authMiddleware, deleteSkill); // ----------------------------------- done
+); // checked -----------------------------------
+skRouter.delete("/skills/:id", authMiddleware, deleteSkill); // ----------------------------------- checked
 
 // ==================== QUALIFICATION ROUTES ====================
 
@@ -65,7 +65,7 @@ skRouter.put(
   authMiddleware,
   validate(updateQualificationSchema),
   updateQualification,
-); // ----------------------------------- done
+); // ----------------------------------- checked
 skRouter.delete("/qualifications/:id", authMiddleware, deleteQualification); // ----------------------------------- done
 
 export default skRouter;

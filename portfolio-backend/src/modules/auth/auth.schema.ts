@@ -24,8 +24,12 @@ export const createAdminSchema = z.object({
   role: z
     .enum(Object.values(ROLE) as [string, ...string[]])
     .default(ROLE.ADMIN),
-  image: z.url("Invalid URL format").nullable().optional().default(null),
-
+  images: z
+    .object({
+      url: z.url("Invalid URL format"),
+      cloudinaryId: z.string().min(1, "Cloudinary ID is required"),
+    })
+    .optional(),
   isActive: z.boolean().optional().default(true),
 });
 export const loginAdminSchema = z.object({
@@ -33,27 +37,15 @@ export const loginAdminSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 export const updateAdminSchema = z.object({
+  name: z.string().trim().optional(),
   email: z.email().optional(),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .optional(),
-  name: z
-    .string()
-    .trim()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must not exceed 50 characters")
-    .regex(/^[a-zA-Z\s'-]+$/, "Name contains invalid characters")
-    .transform((val) => {
-      return val
-        .replace(/\s+/g, " ") // remove extra spaces
-        .toLowerCase()
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    }),
-  isActive: z.boolean().optional(),
-  lastLogin: z.date().nullable().optional(),
+  images: z
+    .object({
+      url: z.url("Invalid URL format"),
+      cloudinaryId: z.string().min(1, "Cloudinary ID required"),
+    })
+    .optional()
+    .nullable(),
 });
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),

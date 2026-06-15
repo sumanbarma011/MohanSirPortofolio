@@ -1,16 +1,22 @@
 import { Router } from "express";
 import { AuthController } from "./auth.controller";
 import { validate } from "../../middleware/zod.validate";
-import { changePasswordSchema, loginAdminSchema } from "./auth.schema";
+import {
+  changePasswordSchema,
+  updateAdminSchema,
+  loginAdminSchema,
+} from "./auth.schema";
 import { authMiddleware } from "../../middleware/auth.middleware";
 export const authRouter = Router();
 authRouter.post("/logIn", validate(loginAdminSchema), AuthController.login);
-authRouter.post("/logout", AuthController.login);
+authRouter.post("/logout", AuthController.logout);
 
-authRouter.get(
-  "/refresh-token",
+authRouter.get("/refresh-token", AuthController.getNewAccessToken);
+authRouter.put(
+  "/update",
   authMiddleware,
-  AuthController.getNewAccessToken,
+  validate(updateAdminSchema),
+  AuthController.updateAuth,
 );
 authRouter.get("/me", authMiddleware, AuthController.me);
 authRouter.post(

@@ -32,5 +32,4 @@ contactRouter.put(
 ); //---- done
 contactRouter.delete("/:id", authMiddleware, deleteContact); //-- done
 contactRouter.post("/:id/respond", authMiddleware, respondToContact);
-
 export default contactRouter;

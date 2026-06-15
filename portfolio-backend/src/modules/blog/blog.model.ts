@@ -3,7 +3,7 @@ import mongoose, { Document, Model } from "mongoose";
 export interface IBlog extends Document {
   title: string;
   content: string;
-  author: string;
+  author: mongoose.Types.ObjectId;
   images: {
     url: string;
     cloudinaryId: string;
@@ -27,9 +27,9 @@ const BlogSchema = new mongoose.Schema<IBlog>(
       minlength: [10, "Content must be at least 10 characters"],
     },
     author: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "Admin",
       required: [true, "Author is required"],
-      trim: true,
     },
     images: [
       {

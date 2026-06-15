@@ -3,13 +3,6 @@ import mongoose, { Schema, Model } from "mongoose";
 
 import { Document } from "mongoose";
 
-// Services Enum (CA Services)
-export enum SERVICE {
-  TAXATION = "TAXATION",
-  AUDIT = "AUDIT",
-  ADVISORY = "ADVISORY",
-  FINANCIAL_PLANNING = "FINANCIAL_PLANNING",
-}
 export enum STATUS {
   NEW = "NEW",
   IN_PROGRESS = "IN_PROGRESS",
@@ -21,7 +14,10 @@ export interface IContact extends Document {
   name: string;
   email: string;
   phone: string;
-  service: SERVICE[];
+  service: {
+    type: mongoose.Types.ObjectId;
+    ref: "Service";
+  }[];
   subject: string;
   message: string;
   isResponded: boolean;
@@ -36,7 +32,7 @@ export interface CreateContactInput {
   name: string;
   email: string;
   phone: string;
-  service: SERVICE;
+  service: string[];
   subject: string;
   message: string;
 }
@@ -48,7 +44,7 @@ export interface UpdateContactInput {
 }
 
 export interface GetContactsQueryInput {
-  service?: SERVICE;
+  service?: string;
   status?: STATUS;
   isResponded?: boolean;
   limit?: number;
@@ -79,9 +75,13 @@ const contactSchema: Schema = new Schema({
     maxlength: 10,
   },
   service: {
-    type: [String],
+    type: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Service",
+      },
+    ],
     required: true,
-    enum: Object.values(SERVICE),
   },
   subject: {
     type: String,

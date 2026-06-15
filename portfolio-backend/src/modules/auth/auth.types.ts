@@ -6,7 +6,10 @@ export type Admin = {
   hashedPassword: string;
   name: string;
   role: ROLE;
-  image: string | null;
+  images: {
+    url: string;
+    cloudinaryId: string;
+  } | null;
   isActive: Boolean;
   lastLogin: NativeDate | null;
   createdAt: NativeDate;

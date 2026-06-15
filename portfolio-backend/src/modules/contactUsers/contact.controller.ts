@@ -19,39 +19,18 @@ export const createContact = catchAsync(
     const contact = new Contact(value as CreateContactInput);
     contact.status = STATUS.NEW;
     contact.isResponded = false;
-    contact.createdAt = new Date();
-    contact.updatedAt = new Date(); // Manually set
     await contact.save();
-    const {
-      name,
-      email,
-      phone,
-      service,
-      subject,
-      message,
-      isResponded,
-      status,
-      _id,
-      createdAt,
-      updatedAt,
-    } = contact.toObject();
-    const filteredContact = {
-      name,
-      email,
-      phone,
-      service,
-      subject,
-      message,
-      isResponded,
-      status,
-      _id,
-      createdAt,
-      updatedAt,
-    };
+
+    const populatedContact = await Contact.findById(contact._id).populate(
+      "service",
+    );
+    if (!populatedContact) {
+      throw notFound("Contact not found after creation");
+    }
     const apiResponse: ApiResponse<createResponseType> = {
       success: true,
       message: "Contact form submitted successfully",
-      data: filteredContact,
+      data: populatedContact.toObject() as createResponseType,
     };
     res.status(201).json(apiResponse);
   },
@@ -67,10 +46,10 @@ export const getAllContacts = catchAsync(
 
     // Get all skills with pagination only
     const contacts = await Contact.find()
+      .populate("service")
       .limit(limit)
       .skip((page - 1) * limit)
-      .sort({ isFeatured: -1, createdAt: -1 })
-      .select("-__v");
+      .sort({ createdAt: -1 });
     if (!contacts) {
       throw notFound("No contacts found");
     }
@@ -89,8 +68,7 @@ export const getContactById = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const contact = await Contact.findById(req.params.id);
-
+    const contact = await Contact.findById(req.params.id).populate("service");
     if (!contact) {
       res.status(404).json({
         success: false,
@@ -198,6 +176,7 @@ export const respondToContact = catchAsync(
 export const getNewContacts = catchAsync(
   async (_req: Request, res: Response): Promise<void> => {
     const contacts = await Contact.find({ status: STATUS.NEW })
+      .populate("service")
       .sort({ createdAt: -1 })
       .limit(50);
 
@@ -212,6 +191,7 @@ export const getNewContacts = catchAsync(
 export const getUnrespondedContacts = catchAsync(
   async (_req: Request, res: Response): Promise<void> => {
     const contacts = await Contact.find({ isResponded: false })
+      .populate("service")
       .sort({ createdAt: -1 })
       .limit(50);
 

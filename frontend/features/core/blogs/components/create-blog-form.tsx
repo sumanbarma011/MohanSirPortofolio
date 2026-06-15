@@ -35,27 +35,8 @@ export function CreateBlogForm(props?: Props) {
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Blog title"
                 />
-                {field.state.meta.isTouched && field.state.meta.errors.length ? (
-                  <p className="text-sm text-destructive">
-                    {field.state.meta.errors[0]?.message}
-                  </p>
-                ) : null}
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="author">
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Author</Label>
-                <Input
-                  id={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Author name"
-                />
-                {field.state.meta.isTouched && field.state.meta.errors.length ? (
+                {field.state.meta.isTouched &&
+                field.state.meta.errors.length ? (
                   <p className="text-sm text-destructive">
                     {field.state.meta.errors[0]?.message}
                   </p>
@@ -76,7 +57,8 @@ export function CreateBlogForm(props?: Props) {
                   placeholder="Full blog content"
                   rows={8}
                 />
-                {field.state.meta.isTouched && field.state.meta.errors.length ? (
+                {field.state.meta.isTouched &&
+                field.state.meta.errors.length ? (
                   <p className="text-sm text-destructive">
                     {field.state.meta.errors[0]?.message}
                   </p>
@@ -94,7 +76,8 @@ export function CreateBlogForm(props?: Props) {
                   onUpload={uploadImage}
                   isUploading={isUploading}
                 />
-                {field.state.meta.isTouched && field.state.meta.errors.length ? (
+                {field.state.meta.isTouched &&
+                field.state.meta.errors.length ? (
                   <p className="text-sm text-destructive">
                     {field.state.meta.errors[0]?.message}
                   </p>
@@ -111,7 +94,9 @@ export function CreateBlogForm(props?: Props) {
             </p>
           )}
 
-          <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
             {([canSubmit, formSubmitting]) => (
               <Button
                 type="submit"

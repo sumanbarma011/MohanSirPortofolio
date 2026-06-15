@@ -4,6 +4,7 @@ import { ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { CreateBlogType } from "./blog.schema";
 import { BlogPost, CloudinaryImage } from "./blog.types";
+import { UserType } from "../auth/auth.types";
 
 export const getAllBlogsQueryOptions = queryOptions({
   queryKey: [queryKeys.blog.read],
@@ -19,7 +20,7 @@ export const createBlogMutationOptions = () =>
   mutationOptions({
     mutationKey: [queryKeys.blog.create],
     mutationFn: (data: CreateBlogType) =>
-      ApiPost<BlogPost>(ApiPath.blog.create, data),
+      ApiPost<[BlogPost, UserType]>(ApiPath.blog.create, data),
   });
 
 export const uploadImageMutationOptions = () =>

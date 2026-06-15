@@ -1,5 +1,4 @@
 import z from "zod";
-import { SERVICE } from "./contact.types";
 
 export const createContactSchema = z.object({
   name: z
@@ -19,7 +18,7 @@ export const createContactSchema = z.object({
     .max(20, "Phone must be at most 20 characters"),
 
   service: z
-    .array(z.enum(SERVICE))
+    .array(z.string("Service must be string"))
     .min(1, "Atleast one service should be selected"),
 
   subject: z

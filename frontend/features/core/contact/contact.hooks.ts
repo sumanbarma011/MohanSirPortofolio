@@ -24,7 +24,7 @@ export const useContactForm = (props?: UseContactFormProps) => {
     defaultValues: {
       name: "Roshan Pokharel",
       email: "email@gmail.com",
-      service: ["ADVISORY"],
+      service: [],
       message: "Hello how are you mohan",
       phone: "9867473181",
       subject: "Hello",

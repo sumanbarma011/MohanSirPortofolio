@@ -43,12 +43,12 @@ export default function BlogDetailPage({ blogId }: { blogId: string }) {
           >
             ← Back to All Blogs
           </Link>
-          <Link
+          {/* <Link
             href={`/admin/blogs/edit/${blogId}`}
             className="px-6 py-3 border-2 border-input bg-background text-foreground font-semibold hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             Edit Blog
-          </Link>
+          </Link> */}
           {/* <DeleteBlog blogId={blogId} /> */}
         </div>
       </div>

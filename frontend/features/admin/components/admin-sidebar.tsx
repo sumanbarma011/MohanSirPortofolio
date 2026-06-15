@@ -40,6 +40,12 @@ const data = {
       isActive: true,
     },
     {
+      title: "Services",
+      url: "/admin/services",
+      icon: NotebookPenIcon,
+      isActive: true,
+    },
+    {
       title: "Messages",
       url: "/admin/messages",
       icon: MessageSquareIcon,

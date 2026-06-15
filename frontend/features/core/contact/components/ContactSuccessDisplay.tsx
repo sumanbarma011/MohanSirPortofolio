@@ -22,11 +22,10 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useContactStore } from "../contact.store";
 
 export const ContactSuccessDisplay: React.FC = () => {
-  const { submittedData, clearSubmittedData } = useContactStore();
+  const { submittedData } = useContactStore();
 
   // Fallback UI if someone navigates directly to this route without submitting data
   if (!submittedData) {
@@ -104,9 +103,14 @@ export const ContactSuccessDisplay: React.FC = () => {
               <div className="space-y-1">
                 <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                   <Briefcase className="w-3.5 h-3.5" /> Service Segment
+                  {submittedData.service?.length > 1 ? "s" : ""}
                 </span>
                 <p className="text-xs font-bold uppercase tracking-wider text-primary">
-                  {submittedData.service}
+                  {Array.isArray(submittedData.service)
+                    ? submittedData.service
+                        .map((srv) => String(srv.name))
+                        .join(", ")
+                    : String(submittedData.service || "").replace(/_/g, " ")}
                 </p>
               </div>
             </div>

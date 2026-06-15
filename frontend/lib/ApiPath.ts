@@ -17,4 +17,8 @@ export const ApiPath = {
   cloudinary: {
     upload: "/cloudinary/upload",
   },
+  services: {
+    getAll: "/service/getAll",
+    create: "/service/create",
+  },
 };

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BlogImages } from "./blog-images";
 import { getSpecificBlogsQueryOptions } from "../blog.query.options";
 import { BlogPost } from "../blog.types";
+import { UserType } from "../../auth/auth.types";
 
 const formatDate = (dateString: Date | string): string => {
   const date = new Date(dateString);
@@ -64,7 +65,6 @@ export function Blog({ blogId }: { blogId: string }) {
     return <p className="text-destructive">Error loading blog post.</p>;
   }
 
-  // Safe extraction matching your API setup: data -> Axios/Fetch wrapper -> BlogPost payload
   const blog: BlogPost | null = data?.data ?? null;
 
   // 4. Handle Empty/Not Found State
@@ -85,11 +85,11 @@ export function Blog({ blogId }: { blogId: string }) {
         <div className="flex items-center gap-3 text-muted-foreground">
           {/* Avatar using secondary semantic color mapping */}
           <div className="w-10 h-10 bg-secondary text-secondary-foreground flex items-center justify-center font-bold rounded">
-            {blog.author.slice(0, 2).toUpperCase()}
+            {blog.author.name && blog.author?.name.slice(0, 2).toUpperCase()}
           </div>
           <div>
             <p className="font-semibold text-foreground">
-              Author Name: {blog.author}
+              Author Name: {blog.author?.name ?? "No Name"}
             </p>
             <p className="text-sm">Updated: {formatDate(blog.updatedAt)}</p>
           </div>

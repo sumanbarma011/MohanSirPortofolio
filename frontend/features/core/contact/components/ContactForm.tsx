@@ -2,16 +2,25 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Send } from "lucide-react";
+import { Send, Loader2, ChevronDown } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useContactForm, UseContactFormProps } from "../contact.hooks";
-import { SERVICE } from "../contact.types";
 import { useContactStore } from "../contact.store";
+import { Service } from "../../services/service.types";
+import { getAllServicesQueryOptions } from "../../services/services.query.option";
 import { ContactSuccessDisplay } from "./ContactSuccessDisplay";
 
 interface ContactFormProps extends UseContactFormProps {
@@ -39,7 +48,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({
   onError,
 }) => {
   const submittedData = useContactStore((state) => state.submittedData);
-  console.log(submittedData);
+
+  // Fetch compliance services from the database using your Query Options
+  const {
+    data: responseContainer,
+    isLoading: isLoadingServices,
+    isError: isServicesError,
+  } = useQuery(getAllServicesQueryOptions);
+
+  // Fallback to empty array safely if parsing nested structure definitions
+  const fetchedServices: Service[] = responseContainer?.data ?? [];
 
   const { form, isSubmitting, mutationError, handleSubmit } = useContactForm({
     onSuccess: (data) => {
@@ -48,7 +66,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     onError,
   });
 
-  // 2. Conditional render interceptor: If already submitted, swap layout to success mode
+  // Conditional render interceptor: If already submitted, swap layout to success mode
   if (submittedData) {
     return (
       <motion.div
@@ -63,7 +81,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     );
   }
 
-  // 3. Main interactive form template
   return (
     <motion.div
       variants={fadeUpVariants}
@@ -76,6 +93,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       <Card className="bg-card border border-border rounded-lg shadow-sm">
         <CardContent className="p-6 space-y-5">
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Map standard text inputs */}
             {FORM_FIELDS.map((field) => (
               <form.Field key={field.id} name={field.id}>
                 {(formField) => (
@@ -102,7 +120,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                     />
                     {formField.state.meta.isTouched &&
                     formField.state.meta.errors.length ? (
-                      <p className="text-red-500 text-xs mt-1">
+                      <p className="text-destructive text-xs mt-1">
                         {formField.state.meta.errors[0]?.message}
                       </p>
                     ) : null}
@@ -111,6 +129,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               </form.Field>
             ))}
 
+            {/* Message Field */}
             <form.Field name="message">
               {(formField) => (
                 <motion.div
@@ -135,7 +154,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                   />
                   {formField.state.meta.isTouched &&
                   formField.state.meta.errors.length ? (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-destructive text-xs mt-1">
                       {formField.state.meta.errors[0]?.message}
                     </p>
                   ) : null}
@@ -143,60 +162,141 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               )}
             </form.Field>
 
+            {/* Services Dropdown Select Element (Supporting Multiple Selections) */}
             <form.Field name="service">
               {(formField) => {
-                const currentServices =
-                  (formField.state.value as SERVICE[]) || [];
+                // Treat value safely as a string array
+                const selectedIds = (formField.state.value as string[]) || [];
+
+                const handleToggleService = (id: string) => {
+                  if (selectedIds.includes(id)) {
+                    formField.handleChange(
+                      selectedIds.filter((item) => item !== id),
+                    );
+                  } else {
+                    formField.handleChange([...selectedIds, id]);
+                  }
+                };
 
                 return (
                   <motion.div
                     variants={fadeUpVariants}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="space-y-2"
+                    className="space-y-1"
                   >
                     <Label className="text-sm text-foreground">
                       Services Required
                     </Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
-                      {Object.values(SERVICE).map((item, i) => {
-                        const isChecked = currentServices.includes(item);
 
-                        return (
-                          <motion.label
-                            key={i}
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ duration: 0.2 }}
-                            className="flex items-center gap-2 cursor-pointer"
-                          >
-                            <Checkbox
-                              id={`service-${i}`}
-                              checked={isChecked}
-                              disabled={isSubmitting}
-                              onCheckedChange={(checked) => {
-                                if (checked) {
-                                  formField.handleChange([
-                                    ...currentServices,
-                                    item,
-                                  ]);
-                                } else {
-                                  formField.handleChange(
-                                    currentServices.filter((s) => s !== item),
-                                  );
-                                }
-                              }}
-                            />
-                            <span>
-                              {item.includes("_")
-                                ? item.replace("_", " ")
-                                : item}
+                    <DropdownMenu>
+                      {/* Using asChild forces Radix to apply the dropdown event listeners 
+            to our div instead of injecting an invalid nested <button> tag.
+          */}
+                      <DropdownMenuTrigger
+                        asChild
+                        disabled={
+                          isSubmitting || isLoadingServices || isServicesError
+                        }
+                      >
+                        <div
+                          role="combobox"
+                          aria-expanded="false"
+                          className="flex min-h-11 w-full items-center justify-between rounded-none border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 text-left transition-colors cursor-pointer"
+                        >
+                          {selectedIds.length > 0 ? (
+                            <div className="flex flex-wrap gap-1.5 max-w-[95%]">
+                              {selectedIds.map((id) => {
+                                const matchedService = Array.isArray(
+                                  fetchedServices,
+                                )
+                                  ? fetchedServices.find(
+                                      (s) => (s.id || s) === id,
+                                    )
+                                  : null;
+                                const label =
+                                  matchedService?.name || matchedService || id;
+
+                                return (
+                                  <Badge
+                                    key={id}
+                                    variant="secondary"
+                                    className="rounded-none bg-secondary text-secondary-foreground gap-1 pr-1 font-normal"
+                                  >
+                                    {String(label).replace(/_/g, " ")}
+                                    <span
+                                      role="button"
+                                      tabIndex={0}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleToggleService(id);
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (
+                                          e.key === "Enter" ||
+                                          e.key === " "
+                                        ) {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          handleToggleService(id);
+                                        }
+                                      }}
+                                      className="text-muted-foreground hover:text-foreground outline-none cursor-pointer p-0.5"
+                                    >
+                                      <X className="h-3 w-3" />
+                                    </span>
+                                  </Badge>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground select-none">
+                              {isLoadingServices
+                                ? "Loading workspace services..."
+                                : isServicesError
+                                  ? "Failed to load services"
+                                  : "Select compliance solutions"}
                             </span>
-                          </motion.label>
-                        );
-                      })}
-                    </div>
+                          )}
+                          <span className="text-muted-foreground text-xs ml-2 select-none">
+                            <ChevronDown className="h-4 w-4" />
+                          </span>
+                        </div>
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent
+                        align="start"
+                        className="w-[var(--radix-dropdown-menu-trigger-width)] bg-popover border border-border text-popover-foreground max-h-60 overflow-y-auto"
+                      >
+                        {Array.isArray(fetchedServices) &&
+                          fetchedServices.map((srv) => {
+                            const serviceValue = String(srv.id || srv);
+                            const serviceLabel = String(srv.name || srv);
+                            const isChecked =
+                              selectedIds.includes(serviceValue);
+
+                            return (
+                              <DropdownMenuCheckboxItem
+                                key={serviceValue}
+                                checked={isChecked}
+                                onCheckedChange={() =>
+                                  handleToggleService(serviceValue)
+                                }
+                                onSelect={(e) => e.preventDefault()} // Keeps dropdown open for multiple rapid clicks
+                                className="focus:bg-accent focus:text-accent-foreground cursor-pointer"
+                              >
+                                {serviceLabel.includes("_")
+                                  ? serviceLabel.replace(/_/g, " ")
+                                  : serviceLabel}
+                              </DropdownMenuCheckboxItem>
+                            );
+                          })}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
                     {formField.state.meta.isTouched &&
                     formField.state.meta.errors.length ? (
-                      <p className="text-red-500 text-xs mt-1">
+                      <p className="text-destructive text-xs mt-1">
                         {formField.state.meta.errors[0]?.message}
                       </p>
                     ) : null}
@@ -205,14 +305,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({
               }}
             </form.Field>
 
-            {/* Global API Mutation Handling Feedback Element */}
+            {/* Global API Mutation Feedback */}
             {mutationError && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="text-destructive text-sm mt-2 font-medium">
                 Server Error: {mutationError.message}
               </p>
             )}
 
-            {/* Form Action Submit Button */}
+            {/* Form Submit Button */}
             <motion.div
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.1 }}
@@ -221,14 +321,25 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 <form.Subscribe
                   selector={(state) => [state.canSubmit, state.isSubmitting]}
                 >
-                  {([canSubmit, isSubmitting]) => (
+                  {([canSubmit, isFormSubmitting]) => (
                     <Button
                       type="submit"
-                      disabled={!canSubmit}
-                      className="w-full bg-primary text-primary-foreground hover:opacity-90 rounded-none h-11 font-medium transition-opacity disabled:bg-gray-400"
+                      disabled={
+                        !canSubmit || isFormSubmitting || isLoadingServices
+                      }
+                      className="w-full bg-primary text-primary-foreground hover:opacity-90 rounded-none h-11 font-medium transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isSubmitting ? "Sending..." : "Send Message"}
-                      <Send className="w-4 h-4 ml-2" />
+                      {isFormSubmitting ? (
+                        <>
+                          Sending...
+                          <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <Send className="w-4 h-4 ml-2" />
+                        </>
+                      )}
                     </Button>
                   )}
                 </form.Subscribe>

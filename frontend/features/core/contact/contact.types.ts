@@ -1,11 +1,4 @@
-export const SERVICE = {
-  TAXATION: "TAXATION",
-  AUDIT: "AUDIT",
-  ADVISORY: "ADVISORY",
-  FINANCIAL_PLANNING: "FINANCIAL_PLANNING",
-} as const;
-
-export type SERVICE = (typeof SERVICE)[keyof typeof SERVICE];
+import { Service } from "../services/service.types";
 
 export const STATUS = {
   NEW: "NEW",
@@ -20,10 +13,12 @@ export type ContactResponseType = {
   name: string;
   email: string;
   phone: string;
-  service: string;
+  service: Service[];
   subject: string;
   message: string;
   isResponded: boolean;
+  response?: string;
+
   status: STATUS;
   readonly _id: string;
   readonly createdAt: Date;

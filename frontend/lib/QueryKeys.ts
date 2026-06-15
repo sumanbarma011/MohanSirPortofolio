@@ -14,4 +14,8 @@ export const queryKeys = {
   cloudinary: {
     upload: "Upload-Cloudinary",
   },
+  services: {
+    get: "services-get-all",
+    create: "-service-create",
+  },
 };

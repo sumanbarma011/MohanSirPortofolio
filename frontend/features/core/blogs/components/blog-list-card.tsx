@@ -57,7 +57,9 @@ export function BlogListCard({ blog }: BlogListCardProps) {
           {blog.title}
         </h2>
 
-        <p className="text-sm text-muted-foreground mb-2">By {blog.author}</p>
+        <p className="text-sm text-muted-foreground mb-2">
+          By {blog?.author?.name}
+        </p>
 
         <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3">
           {truncateText(blog.content)}

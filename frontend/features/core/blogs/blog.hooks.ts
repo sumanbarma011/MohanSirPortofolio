@@ -8,55 +8,54 @@ import {
   uploadImageMutationOptions,
 } from "./blog.query.options";
 import { createBlogSchema, CreateBlogType } from "./blog.schema";
-import { BlogPost, CloudinaryImage } from "./blog.types";
+import { queryClient } from "@/providers/query-client";
 
 export interface UseCreateBlogFormProps {
   onSuccess?: () => void;
 }
 
 export const useCreateBlogForm = (props?: UseCreateBlogFormProps) => {
-  const queryClient = useQueryClient();
   const router = useRouter();
 
   const uploadMutation = useMutation(uploadImageMutationOptions());
 
   const createMutation = useMutation({
     ...createBlogMutationOptions(),
-    onMutate: async (newBlog: CreateBlogType) => {
-      await queryClient.cancelQueries({ queryKey: [queryKeys.blog.read] });
-      const previous = queryClient.getQueryData<ApiResponse<BlogPost[]>>([
-        queryKeys.blog.read,
-      ]);
+    // onMutate: async (newBlog: CreateBlogType) => {
+    //   return ;
+    //   await queryClient.cancelQueries({ queryKey: [queryKeys.blog.read] });
+    //   const previous = queryClient.getQueryData<ApiResponse<BlogPost[]>>([
+    //     queryKeys.blog.read,
+    //   ]);
 
-      const optimisticPost: BlogPost = {
-        id: `temp-${Date.now()}`,
-        title: newBlog.title,
-        content: newBlog.content,
-        author: newBlog.author,
-        images: newBlog.images,
-        Slug: newBlog.title
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)/g, ""),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+    //   const optimisticPost: Omit<BlogPost,"author"> = {
+    //     id: `temp-${Date.now()}`,
+    //     title: newBlog.title,
+    //     content: newBlog.content,
+    //     images: newBlog.images,
+    //     Slug: newBlog.title
+    //       .toLowerCase()
+    //       .replace(/[^a-z0-9]+/g, "-")
+    //       .replace(/(^-|-$)/g, ""),
+    //     createdAt: new Date().toISOString(),
+    //     updatedAt: new Date().toISOString(),
+    //   };
 
-      queryClient.setQueryData<ApiResponse<BlogPost[]>>(
-        [queryKeys.blog.read],
-        (old) => ({
-          ...(old ?? { status: true, message: "", data: [] }),
-          data: [optimisticPost, ...(old?.data ?? [])],
-        }),
-      );
+    //   queryClient.setQueryData<ApiResponse<Omit<BlogPost, author>>>(
+    //     [queryKeys.blog.read],
+    //     (old) => ({
+    //       ...(old ?? { status: true, message: "", data: [] }),
+    //       data: [optimisticPost, ...(old?.data ?? [])],
+    //     }),
+    //   );
 
-      return { previous };
-    },
-    onError: (_err, _vars, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData([queryKeys.blog.read], context.previous);
-      }
-    },
+    //   return { previous };
+    // },
+    // onError: (_err, _vars, context) => {
+    //   if (context?.previous) {
+    //     queryClient.setQueryData([queryKeys.blog.read], context.previous);
+    //   }
+    // },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.blog.read] });
     },

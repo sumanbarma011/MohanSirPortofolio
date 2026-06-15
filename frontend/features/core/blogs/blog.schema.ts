@@ -7,7 +7,6 @@ export const createBlogSchema = z.object({
     .max(200, "Title cannot exceed 200 characters")
     .trim(),
   content: z.string().min(10, "Content must be at least 10 characters"),
-  author: z.string().min(1, "Author is required").trim(),
   images: z.array(
     z.object({
       url: z.url("Invalid URL format"),

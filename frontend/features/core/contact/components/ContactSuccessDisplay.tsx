@@ -62,11 +62,11 @@ export const ContactSuccessDisplay: React.FC = () => {
         <Card className="border border-border bg-card shadow-sm">
           <CardHeader className="border-b pb-4">
             <CardTitle className="text-base font-semibold text-foreground">
-              Submission Ticket Overview
+              Submission Details Overview
             </CardTitle>
             <CardDescription className="text-xs">
-              A copy of this record has been compiled for our administrative
-              dispatch assignment.
+              A copy of this record has been emailed to the contacted person
+              with the following details.
             </CardDescription>
           </CardHeader>
 

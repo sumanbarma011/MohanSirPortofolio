@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { BlogType } from "@/mockdata/BlogData";
+import { BlogPost } from "@/features/core/blogs/blog.types";
 
 export const description = "An interactive area chart";
 
@@ -40,7 +40,7 @@ export const chartConfig = {
 } satisfies ChartConfig;
 
 type DashboardChartProps = {
-  blogs: BlogType[];
+  blogs: BlogPost[];
 };
 
 function getLastNDays(n: number) {

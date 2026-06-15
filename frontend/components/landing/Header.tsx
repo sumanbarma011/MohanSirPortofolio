@@ -162,6 +162,8 @@ export default function Header() {
             transition={{ duration: 0.4, delay: 0.15 }}
             className="flex items-center gap-3 sm:gap-5"
           >
+            <ThemeToggle />
+
             <motion.a
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
@@ -171,8 +173,6 @@ export default function Header() {
             >
               <PhoneCallIcon className="w-5 h-5" />
             </motion.a>
-
-            {/* <ThemeToggle /> */}
 
             <motion.div
               whileHover={{ scale: 1.02, filter: "brightness(1.10)" }}

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "@/components/nav-main";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuthStore } from "@/features/core/auth/store/userStore";
 
 const data = {
   teams: [
@@ -58,6 +59,7 @@ export function AdminSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const isPending = false;
+  const user = useAuthStore((u) => u.user);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -78,8 +80,9 @@ export function AdminSidebar({
         ) : (
           <NavUser
             user={{
-              email: "mock@gmail.com",
-              name: "mock name",
+              email: user?.email ?? "No Name",
+              name: user?.name ?? "No Name",
+              image: user?.image ?? "",
             }}
           />
         )}

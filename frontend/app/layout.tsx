@@ -5,6 +5,7 @@ import Providers from "@/components/providers/provider";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeHydrator } from "@/components/ThemeHydrator";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
       <body className={cn("font-sans")}>
+        <ThemeHydrator />
         <Providers>{children}</Providers>
       </body>
     </html>

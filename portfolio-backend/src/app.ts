@@ -33,7 +33,7 @@ export const createApp = (): express.Express => {
   // ALLOW URLS "*" allows every frontend domains
   app.use(
     cors({
-      origin: process.env.CORS_ORIGINS ?? "http://localhost:5173",
+      origin: process.env.CORS_ORIGINS ?? "http://localhost:3000",
       methods: ["GET", "POST", "PUT", "DELETE"],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,

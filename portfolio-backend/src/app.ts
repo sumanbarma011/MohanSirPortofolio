@@ -7,7 +7,7 @@ import { notFound } from "./middleware/notfound";
 import cookieParser from "cookie-parser";
 import skRouter from "./modules/skills&qualification/s&q.routes";
 import contactRouter from "./modules/contactUsers/contact.routes";
-import blogRouter from "./modules/blog/blog.routes";
+import { blogRouter } from "./modules/blog/blog.routes";
 import { cloudinaryRouter } from "./modules/cloudinary/cloudinary.routes";
 export const createApp = (): express.Express => {
   const app = express();

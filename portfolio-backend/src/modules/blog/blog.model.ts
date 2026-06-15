@@ -1,84 +1,60 @@
-// models/blogPosts.ts
-import mongoose, { Schema, Model } from "mongoose";
-import { IBlogPost, POST_STATUS } from "./blog.type";
+import mongoose, { Document, Model } from "mongoose";
 
-const blogPostSchema: Schema<IBlogPost> = new Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 5,
-    maxlength: 200,
-  },
-  slug: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-  },
-  content: {
-    type: String,
-    required: true,
-    minlength: 100,
-  },
-  excerpt: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 20,
-    maxlength: 500,
-  },
-  author: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: 100,
-  },
-  tags: {
-    type: [String],
-    default: [],
-  },
-  isFeatured: {
-    type: Boolean,
-    default: false,
-  },
-  status: {
-    type: String,
-    required: true,
-    enum: Object.values(POST_STATUS),
-    default: POST_STATUS.DRAFT,
-  },
-  imageUrl: {
-    type: [String], // Array of strings (for multiple images)
-    required: false,
-  },
-  cloudinaryPublicId: {
-    type: [String], // Array of strings (for multiple IDs)
-    required: false,
-  },
-  views: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  publishedAt: {
-    type: Date,
-    required: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+export interface IBlog extends Document {
+  title: string;
+  content: string;
+  author: string;
+  images: {
+    url: string;
+    cloudinaryId: string;
+  }[];
+  Slug: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const BlogPost: Model<IBlogPost> = mongoose.model<IBlogPost>(
-  "BlogPost",
-  blogPostSchema,
+const BlogSchema = new mongoose.Schema<IBlog>(
+  {
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+      maxlength: [200, "Title cannot exceed 200 characters"],
+    },
+    content: {
+      type: String,
+      required: [true, "Content is required"],
+      minlength: [10, "Content must be at least 10 characters"],
+    },
+    author: {
+      type: String,
+      required: [true, "Author is required"],
+      trim: true,
+    },
+    images: [
+      {
+        url: {
+          type: String,
+          required: [true, "Image URL is required"],
+        },
+        cloudinaryId: {
+          type: String,
+          required: [true, "Cloudinary ID is required"],
+        },
+      },
+    ],
+    Slug: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
 );
 
-export { BlogPost };
+export const BlogModel: Model<IBlog> = mongoose.model<IBlog>(
+  "Blog",
+  BlogSchema,
+);

@@ -53,6 +53,14 @@ export const globalErrorHandler = (
       errors = [err.value];
     }
 
+    // Handle expired or invalid JWT errors from jose
+    if (err.code === "ERR_JWT_EXPIRED" || err.name === "JWTExpired") {
+      statusCode = 401;
+      message = "JWT expired";
+      code = "JWT_EXPIRED";
+      errors = [];
+    }
+
     // Operational error (AppError)
     if (err instanceof AppError) {
       return res.status(err.statusCode).json({

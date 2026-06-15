@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllBlogsQueryOptions } from "../blog.query.options";
 import { BlogPost } from "../blog.types";
+import { useAuthStore } from "../../auth/store/userStore";
 
 export const truncateText = (text: string, maxLength: number = 150): string => {
   if (text.length <= maxLength) return text;
@@ -29,6 +30,7 @@ type BlogListCardProps = {
 
 export function BlogListCard({ blog }: BlogListCardProps) {
   const imageUrls = blog.images.map((img) => img.url);
+  const isLoggedIn = useAuthStore((u) => u.isAuthenticated);
 
   return (
     <article className="border-2 border-border overflow-hidden hover:shadow-xl transition-shadow duration-300 bg-card text-card-foreground">
@@ -66,7 +68,7 @@ export function BlogListCard({ blog }: BlogListCardProps) {
         </p>
 
         <Link
-          href={`/admin/blogs/${blog.id}`}
+          href={isLoggedIn ? `/admin/blogs/${blog.id}` : `/blogs/${blog.id}`}
           className="inline-block px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold transition-colors"
         >
           See More →
@@ -76,10 +78,24 @@ export function BlogListCard({ blog }: BlogListCardProps) {
   );
 }
 
-export function Blogs() {
-  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery(
-    getAllBlogsQueryOptions,
-  );
+interface BlogsProps {
+  blogs?: BlogPost[];
+}
+
+export function Blogs({ blogs }: BlogsProps) {
+  const {
+    data: serverBlogs,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+  } = useQuery({
+    ...getAllBlogsQueryOptions,
+    enabled: !blogs, // only run if no blogs
+  });
+
+  const displayBlogs = blogs ?? serverBlogs?.data ?? [];
 
   if (isLoading) {
     return (
@@ -123,9 +139,7 @@ export function Blogs() {
     );
   }
 
-  const blogs = Array.isArray(data?.data) ? data.data : [];
-
-  if (blogs.length === 0) {
+  if (displayBlogs.length === 0) {
     return (
       <div className="col-span-full text-center py-20">
         <div className="border-2 border-border inline-block p-12">
@@ -142,7 +156,7 @@ export function Blogs() {
 
   return (
     <>
-      {blogs.map((blog) => (
+      {displayBlogs.map((blog) => (
         <BlogListCard key={blog.id} blog={blog} />
       ))}
     </>

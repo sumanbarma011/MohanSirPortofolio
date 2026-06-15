@@ -83,11 +83,9 @@ export const useCreateBlogForm = (props?: UseCreateBlogFormProps) => {
 
   const uploadImage = async (file: File) => {
     const response = await uploadMutation.mutateAsync(file);
-    console.log(response, "the response of cloudinary is: ");
     if (!response.data) {
       throw new Error("Upload failed");
     }
-    console.log("the res of cloudinary is: ", response.data);
     return response.data[0];
   };
 

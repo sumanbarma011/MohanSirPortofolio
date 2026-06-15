@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FileText, CheckCircle2, BarChart, PhoneCallIcon } from "lucide-react";
+import BookConsultationButton from "@/components/BookConsultationButton";
 
 export default function NotFound() {
   return (
@@ -72,12 +73,7 @@ export default function NotFound() {
             </a>
 
             {/* Premium Gradient Consultation Button */}
-            <Button
-              asChild
-              className="rounded-md bg-linear-to-r from-primary via-primary/95 to-primary/85 text-primary-foreground font-semibold px-6 py-2.5 shadow-sm transition-all duration-300 hover:brightness-110 hover:shadow-md hover:shadow-primary/10 text-[14px] border border-primary/20"
-            >
-              <Link href="/#contact">Book Consultation</Link>
-            </Button>
+            <BookConsultationButton />
           </div>
 
           <Link href="/" className="w-full sm:flex-1">

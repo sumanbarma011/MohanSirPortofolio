@@ -79,7 +79,7 @@ export default function Header() {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-5 md:gap-8">
             {NAV_ITEMS.map((item, index) => {
               if (item.dropdown) {
                 return (
@@ -160,7 +160,7 @@ export default function Header() {
             initial={{ opacity: 0, x: 8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.15 }}
-            className="flex items-center gap-3 sm:gap-5"
+            className="flex items-center gap-3 xl:gap-5"
           >
             <ThemeToggle />
 
@@ -176,14 +176,14 @@ export default function Header() {
 
             <motion.div
               whileHover={{ scale: 1.02, filter: "brightness(1.10)" }}
-              className="md:block hidden"
+              className="lg:block hidden"
             >
               <BookConsultationButton />
             </motion.div>
             {/* Hamburger Button Container  */}
             <button
               onClick={() => setIsOpen(true)}
-              className="p-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted md:hidden transition-colors duration-200"
+              className="p-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted lg:hidden transition-colors duration-200"
               aria-label="Toggle Menu"
             >
               <Menu className="w-6 h-6" />
@@ -202,7 +202,7 @@ export default function Header() {
               animate={{ opacity: 0.4 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-50 bg-background md:hidden"
+              className="fixed inset-0 z-50 bg-background lg:hidden"
             />
 
             {/* Content Sidebar Panel  */}
@@ -211,7 +211,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-sm bg-background border-l border-border p-6 shadow-2xl flex flex-col justify-between md:hidden"
+              className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-sm bg-background border-l border-border p-6 shadow-2xl flex flex-col justify-between lg:hidden"
             >
               <div>
                 {/* Drawer Close Actions Header */}
@@ -298,12 +298,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className="w-full rounded-md bg-primary text-primary-foreground font-semibold shadow-sm text-sm py-2"
                 >
-                  <Link
-                    href="#contact"
-                    className="w-full h-full flex items-center justify-center text-center"
-                  >
-                    Book Consultation
-                  </Link>
+                  <BookConsultationButton />
                 </Button>
               </div>
             </motion.div>

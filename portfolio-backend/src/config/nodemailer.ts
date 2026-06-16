@@ -72,11 +72,11 @@ export async function sendContactToAdmin(contact: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>📬 New Contact Submission</h1>
+          <h1> New Contact Submission</h1>
           <p>A new contact has been submitted to your website</p>
         </div>
         
-        <!-- ✅ User Info Section -->
+        <!--  User Info Section -->
         <div class="user-info">
           <h2>Contact From:</h2>
           <p><strong>${contact.name}</strong></p>
@@ -103,8 +103,8 @@ export async function sendContactToAdmin(contact: {
         </div>
         
         <div class="footer">
-          <p>📅 Received: ${new Date(contact.createdAt).toLocaleString()}</p>
-          <p>📧 Reply to: <a href="mailto:${contact.email}">${contact.email}</a></p>
+          <p>Received: ${new Date(contact.createdAt).toLocaleString()}</p>
+          <p> Reply to: <a href="mailto:${contact.email}">${contact.email}</a></p>
           <p>This is an automated notification from your CA Portfolio website</p>
         </div>
       </div>

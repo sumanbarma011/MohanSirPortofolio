@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { updateCompanySchema } from "./company.schema";
 import { CompanyModel } from "./company.model";
 import { catchAsync } from "../../utils/async.handler";
-import { notFound } from "../../utils/types/app.error";
+import { forbidden, notFound } from "../../utils/types/app.error";
 import { ApiResponse } from "../../utils/types/app.response.type";
 import {
   CompanyResponse,
@@ -128,10 +128,12 @@ export const updateCompanyController = catchAsync(
 
 export const deleteCompanyController = catchAsync(
   async (req: Request, res: Response) => {
-    // 1. Validate ID
     const { id } = req.params;
 
-    // 2. Find and delete company
+    const companyCount = await CompanyModel.countDocuments();
+    if (companyCount < 5) {
+      throw forbidden("Must have more than 5 company to delete further");
+    }
     const company = await CompanyModel.findByIdAndDelete(id);
 
     if (!company) {

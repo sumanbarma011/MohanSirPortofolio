@@ -5,6 +5,8 @@ export const queryKeys = {
   },
   auth: {
     me: "get-user",
+    update: "update-user",
+    changePassword: "change-password",
   },
   blog: {
     create: "Create-Blog",

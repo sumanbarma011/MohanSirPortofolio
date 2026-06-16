@@ -1,3 +1,5 @@
+import { CloudinaryImage } from "../blogs/blog.types";
+
 export const USER_ROLE = {
   ADMIN: "ADMIN",
 } as const;
@@ -9,7 +11,7 @@ export type UserType = {
   email: string;
   name: string;
   role: UserRoles;
-  image: string | null;
+  images: CloudinaryImage | null;
   isActive: boolean;
   lastLogin: string;
   readonly createdAt: string;

@@ -5,6 +5,7 @@ import {
   ChartAreaIcon,
   MessageSquareIcon,
   NotebookPenIcon,
+  Settings2,
 } from "lucide-react";
 
 import { NavUser } from "@/components/nav-user";
@@ -52,6 +53,12 @@ const data = {
       icon: MessageSquareIcon,
       isActive: true,
     },
+    {
+      title: "Settings",
+      url: "/admin/settings",
+      icon: Settings2,
+      isActive: true,
+    },
   ],
 };
 
@@ -60,6 +67,7 @@ export function AdminSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   const isPending = false;
   const user = useAuthStore((u) => u.user);
+  console.log(user);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -82,7 +90,7 @@ export function AdminSidebar({
             user={{
               email: user?.email ?? "No Name",
               name: user?.name ?? "No Name",
-              image: user?.image ?? "",
+              image: user?.images?.url ?? "",
             }}
           />
         )}

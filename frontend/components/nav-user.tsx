@@ -17,8 +17,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 type Props = {
@@ -33,7 +31,7 @@ export function NavUser({ user }: Props) {
   const { isMobile } = useSidebar();
   const logoutFn = useAuthStore((u) => u.logout);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-
+  console.log(user.image, " user image");
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {

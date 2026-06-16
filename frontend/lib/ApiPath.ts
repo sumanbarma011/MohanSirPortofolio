@@ -8,6 +8,8 @@ export const ApiPath = {
     logout: "/auth/logout",
     me: "/auth/me",
     refresh: "/auth/refresh-token",
+    update: "/auth/update",
+    changePassword: "/auth/change-password",
   },
   blog: {
     create: "/blog/create",

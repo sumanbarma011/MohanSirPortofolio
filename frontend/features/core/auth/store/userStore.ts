@@ -5,7 +5,6 @@ import { ApiResponse } from "@/lib/global.types";
 import { ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { UserType } from "../auth.types";
 import { ApiPath } from "@/lib/ApiPath";
-
 interface AuthState {
   user: UserType | null;
   isAuthenticated: boolean;
@@ -42,15 +41,14 @@ export const useAuthStore = create<AuthState>()((set) => ({
       toast(res.data.message || "Logout successfully");
     } catch (error) {
     } finally {
+      if (typeof window !== "undefined") {
+        window.location.href = "/";
+      }
       // Clear state variables back to unauthenticated baselines
       set({
         user: null,
         isAuthenticated: false,
       });
-
-      if (typeof window !== "undefined") {
-        window.location.href = "/";
-      }
     }
   },
 }));

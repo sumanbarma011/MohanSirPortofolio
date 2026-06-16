@@ -11,7 +11,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         {children}
         {/* to run shadcn toaster */}
-        <Toaster duration={500} closeButton richColors />
+        <Toaster duration={500} closeButton richColors position="top-right" />
       </QueryClientProvider>
     </TooltipProvider>
   );

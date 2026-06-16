@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CreateBlogForm } from "./create-blog-form";
+import { ArrowLeftCircleIcon } from "lucide-react";
 
 export default function CreateBlogPage() {
   return (
@@ -9,19 +10,7 @@ export default function CreateBlogPage() {
           href="/admin/blogs"
           className="inline-flex items-center gap-2 text-foreground font-semibold hover:underline mb-8"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          <ArrowLeftCircleIcon />
           Back to Blogs
         </Link>
 

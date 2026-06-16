@@ -26,8 +26,8 @@ const NAV_ITEMS = [
     href: "#blogs",
     isButton: true,
     dropdown: [
-      { name: "Latest Blogs", href: "#blogs" },
-      { name: "Highlighted Blogs", href: "#blogs" },
+      { name: "Latest Blogs", href: "/blogs" },
+      { name: "Highlighted Blogs", href: "/#blogs" },
     ],
   },
 ];

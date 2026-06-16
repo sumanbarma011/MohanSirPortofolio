@@ -148,24 +148,27 @@ export class AuthController {
   static changePassword = catchAsync(
     async (req: Request, res: Response): Promise<void> => {
       const { currentPassword, newPassword } = req.body as changePasswordType;
-      const userId = req.user.id; // From auth middleware
-
+      const userId = req.user.id;
+      console.log(userId);
+      console.log(currentPassword);
       // Find admin
-      const admin = await Admin.findById(userId);
+      const admin = await Admin.findById(userId).select("+hashedPassword");
+
       if (!admin) {
         throw notFound("Admin Id not found");
       }
-
+      console.log(admin.hashedPassword);
       // Verify current password
       const isPasswordValid = await bcrypt.compare(
         currentPassword,
         admin.hashedPassword,
       );
+      console.log("==============");
+
       if (!isPasswordValid) {
         throw unauthorized("Password not matched");
       }
 
-      // Update password (will be hashed by pre('save') hook)
       admin.hashedPassword = newPassword;
       await admin.save();
 

@@ -131,9 +131,11 @@ export const deleteCompanyController = catchAsync(
     const { id } = req.params;
 
     const companyCount = await CompanyModel.countDocuments();
-    if (companyCount < 5) {
+    console.log(companyCount);
+    if (companyCount < 6) {
       throw forbidden("Must have more than 5 company to delete further");
     }
+    // const imageurl=
     const company = await CompanyModel.findByIdAndDelete(id);
 
     if (!company) {

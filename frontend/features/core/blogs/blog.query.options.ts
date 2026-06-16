@@ -1,6 +1,6 @@
 import { ApiPath } from "@/lib/ApiPath";
 import { queryKeys } from "@/lib/QueryKeys";
-import { ApiGet, ApiPost } from "@/providers/axiosInstance";
+import { ApiDelete, ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { CreateBlogType } from "./blog.schema";
 import { BlogPost, CloudinaryImage } from "./blog.types";
@@ -32,4 +32,12 @@ export const uploadImageMutationOptions = () =>
       formData.append("folder", "ca_portfolio/blog");
       return ApiPost<CloudinaryImage[]>(ApiPath.cloudinary.upload, formData);
     },
+  });
+
+export const deleteBlogMutationOptions = () =>
+  mutationOptions({
+    mutationKey: [queryKeys.blog.delete],
+
+    mutationFn: (blogId: string) =>
+      ApiDelete<void>(`${ApiPath.blog.delete}${blogId}`),
   });

@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Blog } from "./blog";
 import { useAuthStore } from "../../auth/store/userStore";
+import { DeleteBlogButton } from "./DeleteBlogButton";
 
 export default function BlogDetailPage({ blogId }: { blogId: string }) {
   const isLoggedIn = useAuthStore((u) => u.isAuthenticated);
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-5xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-background text-foreground mb-4">
+      <div className="max-w-5xl mx-auto px-4 pt-12">
         {/* Back Button */}
         <Link
           href={isLoggedIn ? "/admin/blogs" : "/blogs"}
@@ -32,7 +33,7 @@ export default function BlogDetailPage({ blogId }: { blogId: string }) {
         </Link>
 
         {/* Divider */}
-        <div className="border-t-2 border-border my-12">
+        <div className="border-t-2 border-border">
           <Suspense fallback={<Spinner />}>
             <Blog blogId={blogId} />
           </Suspense>
@@ -52,7 +53,7 @@ export default function BlogDetailPage({ blogId }: { blogId: string }) {
           >
             Edit Blog
           </Link> */}
-          {/* <DeleteBlog blogId={blogId} /> */}
+          <DeleteBlogButton isLoggedIn blogId={blogId} />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Building2, Calendar, ShieldCheck, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CompanyResponse } from "../company.query.options";
+import { DeleteCompanyButton } from "./DeleteCompanyButton";
 
 type CompanyListViewProps = {
   companies: CompanyResponse[];
@@ -48,7 +49,7 @@ export function CompanyListView({ companies = [] }: CompanyListViewProps) {
             className="group flex flex-col justify-between bg-card border border-border rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-200"
           >
             <div className="space-y-4">
-              {/* Header Container Area: Brand Icon Logo + Status Token */}
+              {/* Header Container Area: Brand Icon Logo + Status/Actions Token */}
               <div className="flex items-start justify-between gap-4">
                 <div className="relative h-12 w-12 rounded-lg border border-border bg-muted flex items-center justify-center overflow-hidden shrink-0">
                   {company.logo?.url ? (
@@ -63,25 +64,30 @@ export function CompanyListView({ companies = [] }: CompanyListViewProps) {
                   )}
                 </div>
 
-                {/* Status Enums Badge indicators mapped directly to Tailwind color variables */}
-                <Badge
-                  variant="secondary"
-                  className={`gap-1 select-none font-medium ${
-                    company.isActive
-                      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                      : "bg-amber-500/10 text-amber-600 border-amber-500/20"
-                  }`}
-                >
-                  {company.isActive ? (
-                    <>
-                      <ShieldCheck className="h-3 w-3" /> Active
-                    </>
-                  ) : (
-                    <>
-                      <ShieldAlert className="h-3 w-3" /> Suspended
-                    </>
-                  )}
-                </Badge>
+                {/* Action Block Container: Groups Status Badge and Deletion Trigger side-by-side */}
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="secondary"
+                    className={`gap-1 select-none font-medium h-9 border bg-opacity-10 ${
+                      company.isActive
+                        ? "bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                        : "bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                    }`}
+                  >
+                    {company.isActive ? (
+                      <>
+                        <ShieldCheck className="h-3 w-3" /> Active
+                      </>
+                    ) : (
+                      <>
+                        <ShieldAlert className="h-3 w-3" /> Suspended
+                      </>
+                    )}
+                  </Badge>
+
+                  {/* Icon-only Delete Button Module */}
+                  <DeleteCompanyButton companyId={company.id} />
+                </div>
               </div>
 
               {/* Core Text Body Content Metadata Block */}

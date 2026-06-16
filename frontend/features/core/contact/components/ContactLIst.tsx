@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { getAllContactsQueryOptions } from "../contact.query.options";
 import { ContactResponseType } from "../contact.types";
 import { ContactDetailDialog } from "./ContactDetailDialog"; // Adjust Path
+import { DeleteContactButton } from "./DeleteContactButton";
 
 export const AdminContactDashboard: React.FC = () => {
   const { data, isLoading, isError, error, refetch, isRefetching } = useQuery(
@@ -153,26 +154,39 @@ export const AdminContactDashboard: React.FC = () => {
           >
             <div>
               <CardHeader className="space-y-2 pb-3">
+                {/* Header Badge Row Container */}
                 <div className="flex justify-between items-start gap-2">
-                  <Badge
-                    variant="outline"
-                    className="uppercase tracking-wider text-[10px] font-semibold px-2 py-0.5"
-                  >
-                    {contact.status}
-                  </Badge>
-
-                  {contact.isResponded ? (
-                    <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/10 border-emerald-500/20 gap-1 rounded-full text-xs">
-                      <CheckCircle2 className="w-3 h-3" /> Responded
-                    </Badge>
-                  ) : (
+                  <div className="flex flex-wrap items-center gap-1.5">
                     <Badge
-                      variant="destructive"
-                      className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/10 border-amber-500/20 gap-1 rounded-full text-xs"
+                      variant="outline"
+                      className="uppercase tracking-wider text-[10px] font-semibold px-2 py-0.5"
                     >
-                      <XCircle className="w-3 h-3" /> Pending
+                      {contact.status}
                     </Badge>
-                  )}
+
+                    {contact.isResponded ? (
+                      <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/10 border-emerald-500/20 gap-1 rounded-full text-xs">
+                        <CheckCircle2 className="w-3 h-3" /> Responded
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="destructive"
+                        className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/10 border-amber-500/20 gap-1 rounded-full text-xs"
+                      >
+                        <XCircle className="w-3 h-3" /> Pending
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Icon-only Delete Contact action module.
+                  div wrapper with stopPropagation blocks the card's main click handler 
+                */}
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="shrink-0"
+                  >
+                    <DeleteContactButton contactId={contact._id} />
+                  </div>
                 </div>
 
                 <CardTitle className="text-lg font-bold tracking-tight text-foreground line-clamp-1 mt-1">

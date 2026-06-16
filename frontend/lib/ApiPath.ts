@@ -2,6 +2,7 @@ export const ApiPath = {
   contact: {
     create: "/contact/create",
     read: "/contact/getAll",
+    delete: "/contact/",
   },
   auth: {
     login: "/auth/login",

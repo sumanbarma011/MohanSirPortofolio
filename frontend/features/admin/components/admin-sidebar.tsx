@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  BriefcaseBusiness,
   Building2Icon,
   ChartAreaIcon,
   MessageSquareIcon,
@@ -45,7 +46,7 @@ const data = {
     {
       title: "Services",
       url: "/admin/services",
-      icon: NotebookPenIcon,
+      icon: BriefcaseBusiness,
       isActive: true,
     },
     {

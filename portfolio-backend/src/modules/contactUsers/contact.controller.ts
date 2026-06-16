@@ -6,14 +6,16 @@ import { type Request, type Response } from "express";
 import { Contact, STATUS } from "./contact.model";
 import { CreateContactInput } from "./contact.model";
 
-import { notFound } from "../../utils/types/app.error";
+import { badRequest, notFound } from "../../utils/types/app.error";
 import { catchAsync } from "../../utils/async.handler";
+import { sendContactToAdmin } from "../../config/nodemailer";
 
 // ==================== PUBLIC (Viewers) ====================
 
 // Create Contact (Public - Any Viewer)
 export const createContact = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    console.log("================");
     const value = req.body;
     const contact = new Contact(value as CreateContactInput);
     contact.status = STATUS.NEW;
@@ -65,6 +67,12 @@ export const createContact = catchAsync(
     //   subject: `Thank You for Contacting Us - ${contact.subject}`,
     //   text: `Dear ${contact.name}, Thank you for reaching out to us regarding ${contact.subject}. We have received your message and will respond within 24-48 hours.`,
     // });
+    try {
+      await sendContactToAdmin(contact);
+      console.log("email send successfully");
+    } catch (error) {
+      throw badRequest("Email cannot be send");
+    }
     const apiResponse: ApiResponse<createResponseType> = {
       success: true,
       message: "Contact form submitted successfully",

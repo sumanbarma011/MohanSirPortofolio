@@ -129,10 +129,10 @@ export async function sendContactToAdmin(contact: {
 
   return sendEmail({
     to: process.env.ADMIN_EMAIL!,
-    subject: `📬 New Contact from ${contact.name}: ${contact.subject}`,
+    subject: ` New Contact from ${contact.name}: ${contact.subject}`,
     text,
     html,
-    // ✅ Add fromName - shows who sent the email
+
     fromName: `${contact.name} (${contact.email})`,
   });
 }

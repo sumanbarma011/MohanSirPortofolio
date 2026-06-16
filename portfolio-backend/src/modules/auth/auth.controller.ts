@@ -81,7 +81,7 @@ export class AuthController {
     },
   );
   static updateAuth = catchAsync(async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const id = req.user.id;
     const body = req.body as UpdateAdmin;
     const validatedBody = body;
     const updateData = await Admin.findByIdAndUpdate(id, validatedBody, {
@@ -134,7 +134,7 @@ export class AuthController {
       httpOnly: true,
       sameSite: "none",
       secure: true,
-       maxAge: 1000 * 60 * 15,
+      maxAge: 1000 * 60 * 15,
       path: "/",
     });
     const response: ApiResponse<{ accessToken: string }> = {

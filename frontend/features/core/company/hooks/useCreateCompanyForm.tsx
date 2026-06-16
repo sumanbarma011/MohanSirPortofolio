@@ -9,10 +9,12 @@ import {
   createCompanySchema,
   CreateCompanyType,
 } from "../company.query.options";
+import { uploadImageMutationOptions } from "../../blogs/blog.query.options";
 
 export const useCreateCompanyForm = () => {
   const router = useRouter();
   const mutation = useMutation(createCompanyMutationOptions());
+  const uploadMutation = useMutation(uploadImageMutationOptions());
 
   const form = useForm({
     defaultValues: {
@@ -39,6 +41,14 @@ export const useCreateCompanyForm = () => {
     },
   });
 
+  const uploadImage = async (file: File) => {
+    const response = await uploadMutation.mutateAsync(file);
+    if (!response.data) {
+      throw new Error("Upload failed");
+    }
+    return response.data[0];
+  };
+
   return {
     form,
     handleSubmit: (e: React.FormEvent) => {
@@ -47,6 +57,8 @@ export const useCreateCompanyForm = () => {
       form.handleSubmit();
     },
     isSubmitting: mutation.isPending,
+    uploadImage,
+    isUploading: uploadMutation.isPending,
   };
 };
 

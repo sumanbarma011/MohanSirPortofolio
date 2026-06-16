@@ -9,14 +9,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { UseCreateCompanyFormReturn } from "../hooks/useCreateCompanyForm";
 import { ImageUploadField } from "../../blogs/components/image-upload-field";
-import { SingleImageUploadField } from "@/components/SingleImageUploadFile";
 
 type CreateCompanyViewProps = {
   formController: UseCreateCompanyFormReturn;
 };
 
 export function CreateCompanyView({ formController }: CreateCompanyViewProps) {
-  const { form, handleSubmit, isSubmitting } = formController;
+  const { form, handleSubmit, isSubmitting, uploadImage, isUploading } =
+    formController;
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8 bg-background">
@@ -40,34 +40,27 @@ export function CreateCompanyView({ formController }: CreateCompanyViewProps) {
           {/* Logo Identity Field */}
           <form.Field name="logo">
             {(field) => (
-              <div className="space-y-2">
-                <div>
-                  <Label className="text-sm font-semibold text-foreground">
-                    Company Branding Logo
-                  </Label>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    This logo represents your workspace node across tables and
-                    navigation menus.
-                  </p>
-                </div>
-
-                <div className="pt-1 flex justify-center">
-                  <SingleImageUploadField
-                    value={field.state.value}
-                    onChange={(uploaded) => field.handleChange(uploaded)}
-                    isUploading={false} // Connect this to your real loading mutation state if available
-                    onUpload={async (file) => {
-                      // Replace with your actual uploading action endpoint query function logic
-                      return {
-                        url: URL.createObjectURL(file),
-                        cloudinaryId: "temp_id",
-                      };
-                    }}
-                  />
-                </div>
-
+              <div className="space-y-2 flex flex-col ">
+                <Label className="font-semibold text-foreground">
+                  Company Branding Logo
+                </Label>
+                <ImageUploadField
+                  // Convert single object value or null into a structured array
+                  images={field.state.value ? [field.state.value] : []}
+                  onImagesChange={(updatedImages) => {
+                    if (updatedImages.length > 0) {
+                      field.handleChange(updatedImages[0]);
+                    } else {
+                      field.handleChange(null);
+                    }
+                  }}
+                  onUpload={uploadImage}
+                  isUploading={isUploading}
+                  hideUploadField={!!field.state.value?.url}
+                  label="Upload Logo"
+                />
                 {field.state.meta.errors && (
-                  <p className="text-xs font-medium text-destructive mt-1.5 flex items-center gap-1">
+                  <p className="text-xs text-destructive mt-1">
                     {field.state.meta.errors[0]?.message}
                   </p>
                 )}

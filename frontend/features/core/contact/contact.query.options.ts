@@ -1,6 +1,6 @@
 import { ApiPath } from "@/lib/ApiPath";
 import { queryKeys } from "@/lib/QueryKeys";
-import { ApiGet, ApiPost } from "@/providers/axiosInstance";
+import { ApiDelete, ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { createContactType } from "./contact.schema";
 import { ContactResponseType } from "./contact.types";
@@ -18,3 +18,13 @@ export const getAllContactsQueryOptions = queryOptions({
   queryKey: [queryKeys.contact.read],
   queryFn: () => ApiGet<ContactResponseType[]>(ApiPath.contact.read),
 });
+
+export const deleteContactMutationOptions = () =>
+  mutationOptions({
+    // Cache management tracking key
+    mutationKey: [queryKeys.contact.delete],
+
+    // Mutation target execution passing the target ID to the string path template
+    mutationFn: (contactId: string) =>
+      ApiDelete<void>(`${ApiPath.contact.delete}${contactId}`),
+  });

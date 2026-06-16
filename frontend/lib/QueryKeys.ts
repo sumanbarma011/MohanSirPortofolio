@@ -2,6 +2,7 @@ export const queryKeys = {
   contact: {
     create: "Create-Contact",
     read: "Read-Contact",
+    delete: "delete-contact",
   },
   auth: {
     me: "get-user",

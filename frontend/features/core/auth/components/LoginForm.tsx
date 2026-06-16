@@ -109,15 +109,6 @@ export function LoginForm({
             <form.Field name="password">
               {(field) => (
                 <div className="space-y-2 relative">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor={field.name}>Password</Label>
-                    <a
-                      href="#"
-                      className="text-sm underline-offset-4 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
                   <Input
                     id={field.name}
                     name={field.name}

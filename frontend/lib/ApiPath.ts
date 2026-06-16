@@ -16,6 +16,7 @@ export const ApiPath = {
     read: "/blog/getAll",
     specificBlog: "/blog/get/",
     delete: "/blog/delete/",
+    update: "/blog/updateBlogs/",
   },
   cloudinary: {
     upload: "/cloudinary/upload",

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { AlertTriangle, Edit2Icon, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllBlogsQueryOptions } from "../blog.query.options";
@@ -69,7 +69,7 @@ export function BlogListCard({ blog }: BlogListCardProps) {
         </p>
 
         {/* Button Control Container Panel */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap justify-between items-center gap-3">
           <Link
             href={isLoggedIn ? `/admin/blogs/${blog.id}` : `/blogs/${blog.id}`}
             className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold transition-colors h-11"
@@ -77,10 +77,18 @@ export function BlogListCard({ blog }: BlogListCardProps) {
             See More →
           </Link>
 
-          {/* Render the delete button layout block if the user has active session rules */}
-          {isLoggedIn && (
-            <DeleteBlogButton blogId={blog.id} isLoggedIn={isLoggedIn} />
-          )}
+          <div className="flex gap-3 items-center">
+            {isLoggedIn && (
+              <Link href={`/admin/blogs/${blog.id}/update`}>
+                <Edit2Icon />
+              </Link>
+            )}
+
+            {/* Render the delete button layout block if the user has active session rules */}
+            {isLoggedIn && (
+              <DeleteBlogButton blogId={blog.id} isLoggedIn={isLoggedIn} />
+            )}
+          </div>
         </div>
       </div>
     </article>

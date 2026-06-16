@@ -38,5 +38,5 @@ export const updateBlogSchema = z.object({
     .optional(),
 });
 
-export type CreateBlogType = z.infer<typeof createBlogSchema>;
 export type UpdateBlogType = z.infer<typeof updateBlogSchema>;
+export type CreateBlogType = z.infer<typeof createBlogSchema>;

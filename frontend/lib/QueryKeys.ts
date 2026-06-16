@@ -12,6 +12,8 @@ export const queryKeys = {
     create: "Create-Blog",
     read: "Read-Blogs",
     readSpecific: "read-specific",
+    delete: "blog-delete",
+    update: "blog-update",
   },
   cloudinary: {
     upload: "Upload-Cloudinary",
@@ -27,5 +29,6 @@ export const queryKeys = {
   company: {
     create: "create-company",
     getAll: "company-getAll",
+    delete: "company-delete",
   },
 };

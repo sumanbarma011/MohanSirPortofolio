@@ -3,6 +3,9 @@ import { queryKeys } from "@/lib/QueryKeys";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { updateBlogMutationOptions } from "./blog.query.options";
+import { updateBlogSchema, UpdateBlogType } from "./blog.schema";
 import {
   createBlogMutationOptions,
   uploadImageMutationOptions,
@@ -104,3 +107,87 @@ export const useCreateBlogForm = (props?: UseCreateBlogFormProps) => {
 };
 
 export type UseCreateBlogFormReturn = ReturnType<typeof useCreateBlogForm>;
+
+/* 
+
+
+for update
+
+*/
+
+export interface UseUpdateBlogFormProps {
+  blogId: string;
+  initialData: UpdateBlogType;
+  onSuccess?: () => void;
+}
+
+export const useUpdateBlogForm = ({
+  blogId,
+  initialData,
+  onSuccess,
+}: UseUpdateBlogFormProps) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const uploadMutation = useMutation(uploadImageMutationOptions());
+  const updateMutation = useMutation({
+    ...updateBlogMutationOptions(blogId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.blog.read] });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.blog.readSpecific, blogId],
+      });
+    },
+  });
+
+  const form = useForm({
+    defaultValues: {
+      title: initialData.title ?? "",
+      content: initialData.content ?? "",
+      author: initialData.author ?? "",
+      images: initialData.images ?? [],
+    } as UpdateBlogType,
+    validators: {
+      onChange: updateBlogSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        await updateMutation.mutateAsync(value);
+        toast.success("Blog entry updated successfully");
+
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push("/admin/blogs");
+          router.refresh();
+        }
+      } catch (err) {
+        console.error("Failed to commit blog overrides:", err);
+        toast.error("Failed to update blog content.");
+      }
+    },
+  });
+
+  const uploadImage = async (file: File) => {
+    const response = await uploadMutation.mutateAsync(file);
+    if (!response.data) {
+      throw new Error("Upload failed");
+    }
+    return response.data[0];
+  };
+
+  return {
+    form,
+    handleSubmit: (e: React.FormEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      form.handleSubmit();
+    },
+    isSubmitting: updateMutation.isPending,
+    isUploading: uploadMutation.isPending,
+    mutationError: updateMutation.error,
+    uploadImage,
+  };
+};
+
+export type UseUpdateBlogFormReturn = ReturnType<typeof useUpdateBlogForm>;

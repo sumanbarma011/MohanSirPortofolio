@@ -15,6 +15,8 @@ export const ApiPath = {
     create: "/blog/create",
     read: "/blog/getAll",
     specificBlog: "/blog/get/",
+    delete: "/blog/delete/",
+    update: "/blog/updateBlogs/",
   },
   cloudinary: {
     upload: "/cloudinary/upload",
@@ -22,13 +24,16 @@ export const ApiPath = {
   services: {
     getAll: "/service/getAll",
     create: "/service/create",
+    delete: "/service/delete/",
   },
   skills: {
     get: "/sq/getAll",
     create: "/sq/create",
+    delete: "/sq/delete/",
   },
   company: {
     create: "/company/create",
     getAll: "/company/getAll",
+    delete: "/company/delete/",
   },
 };

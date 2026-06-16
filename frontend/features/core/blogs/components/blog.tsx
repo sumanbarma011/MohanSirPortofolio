@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { BlogImages } from "./blog-images";
 import { getSpecificBlogsQueryOptions } from "../blog.query.options";
 import { BlogPost } from "../blog.types";
-import { UserType } from "../../auth/auth.types";
 
 const formatDate = (dateString: Date | string): string => {
   const date = new Date(dateString);
@@ -72,11 +71,10 @@ export function Blog({ blogId }: { blogId: string }) {
     return <p className="text-muted-foreground">Blog record not found.</p>;
   }
 
-  console.log(blog, "the blog is");
   return (
     <>
       {/* Article Header */}
-      <header className="mb-10 text-foreground">
+      <header className="mb-4 text-foreground">
         <time className="text-sm text-muted-foreground font-semibold uppercase tracking-wide">
           {formatDate(blog.createdAt)}
         </time>
@@ -106,7 +104,7 @@ export function Blog({ blogId }: { blogId: string }) {
       )}
 
       {/* Article Content */}
-      <article className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground">
+      <article className="mb-3 prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground">
         <div className="text-foreground leading-relaxed whitespace-pre-wrap text-lg">
           {blog.content}
         </div>

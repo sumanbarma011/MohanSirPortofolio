@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { AlertTriangle, Edit2Icon, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllBlogsQueryOptions } from "../blog.query.options";
 import { BlogPost } from "../blog.types";
 import { useAuthStore } from "../../auth/store/userStore";
+import { DeleteBlogButton } from "./DeleteBlogButton";
 
 export const truncateText = (text: string, maxLength: number = 150): string => {
   if (text.length <= maxLength) return text;
@@ -55,7 +56,7 @@ export function BlogListCard({ blog }: BlogListCardProps) {
           {formatDate(blog.createdAt)}
         </time>
 
-        <h2 className="text-2xl  font-bold text-foreground mt-3 mb-3 line-clamp-1">
+        <h2 className="text-2xl font-bold text-foreground mt-3 mb-3 line-clamp-1">
           {blog.title}
         </h2>
 
@@ -67,12 +68,28 @@ export function BlogListCard({ blog }: BlogListCardProps) {
           {truncateText(blog.content)}
         </p>
 
-        <Link
-          href={isLoggedIn ? `/admin/blogs/${blog.id}` : `/blogs/${blog.id}`}
-          className="inline-block px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold transition-colors"
-        >
-          See More →
-        </Link>
+        {/* Button Control Container Panel */}
+        <div className="flex flex-wrap justify-between items-center gap-3">
+          <Link
+            href={isLoggedIn ? `/admin/blogs/${blog.id}` : `/blogs/${blog.id}`}
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold transition-colors h-11"
+          >
+            See More →
+          </Link>
+
+          <div className="flex gap-3 items-center">
+            {isLoggedIn && (
+              <Link href={`/admin/blogs/${blog.id}/update`}>
+                <Edit2Icon />
+              </Link>
+            )}
+
+            {/* Render the delete button layout block if the user has active session rules */}
+            {isLoggedIn && (
+              <DeleteBlogButton blogId={blog.id} isLoggedIn={isLoggedIn} />
+            )}
+          </div>
+        </div>
       </div>
     </article>
   );

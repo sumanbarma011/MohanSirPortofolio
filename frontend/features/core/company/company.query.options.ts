@@ -1,6 +1,6 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import { z } from "zod";
-import { ApiGet, ApiPost } from "@/providers/axiosInstance";
+import { ApiDelete, ApiGet, ApiPost } from "@/providers/axiosInstance";
 import { ApiPath } from "@/lib/ApiPath";
 import { queryKeys } from "@/lib/QueryKeys";
 
@@ -50,3 +50,11 @@ export const getAllCompaniesQueryOptions = queryOptions({
   queryKey: [queryKeys.company.getAll],
   queryFn: () => ApiGet<CompanyResponse[]>(ApiPath.company.getAll),
 });
+
+export const deleteCompanyMutationOptions = () =>
+  mutationOptions({
+    mutationKey: [queryKeys.company.delete],
+
+    mutationFn: (companyId: string) =>
+      ApiDelete<void>(`${ApiPath.company.delete}${companyId}`),
+  });

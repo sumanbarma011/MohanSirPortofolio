@@ -37,8 +37,6 @@ export default function AdminLayout({
       return <LoadingScreen message="Unauthorized. Redirecting to login..." />;
     }
 
-    // Synchronously update your store using Zustand's direct setState method
-    // to prevent hydration or asynchronous layout-lag mismatches
     useAuthStore.setState({ user, isAuthenticated: true });
   }
 

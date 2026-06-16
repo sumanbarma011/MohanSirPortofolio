@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  Building2Icon,
   ChartAreaIcon,
   MessageSquareIcon,
   NotebookPenIcon,
@@ -54,6 +55,12 @@ const data = {
       isActive: true,
     },
     {
+      title: "Client Company",
+      url: "/admin/company",
+      icon: Building2Icon,
+      isActive: true,
+    },
+    {
       title: "Settings",
       url: "/admin/settings",
       icon: Settings2,
@@ -67,7 +74,6 @@ export function AdminSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   const isPending = false;
   const user = useAuthStore((u) => u.user);
-  console.log(user);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

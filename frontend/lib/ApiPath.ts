@@ -27,4 +27,8 @@ export const ApiPath = {
     get: "/sq/getAll",
     create: "/sq/create",
   },
+  company: {
+    create: "/company/create",
+    getAll: "/company/getAll",
+  },
 };

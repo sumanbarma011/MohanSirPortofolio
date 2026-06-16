@@ -24,4 +24,8 @@ export const queryKeys = {
     get: "skills-get-all",
     create: "skills-create",
   },
+  company: {
+    create: "create-company",
+    getAll: "company-getAll",
+  },
 };

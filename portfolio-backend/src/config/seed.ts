@@ -10,11 +10,12 @@ export async function seedAdmin() {
       console.log("Admin already exists. Skipping seeding.");
       return;
     }
-
+    const password = "Suman123$";
+    const hashedPassword = bcrypt.hash(password, 10);
     // Create initial admin (CA)
     const adminData = {
       email: "suman011@gmail.com", // Change to CA's actual email
-      hashedPassword: "Suman123$", // Change to CA's actual password
+      hashedPassword: hashedPassword, // Change to CA's actual password
       name: "Mohan Sir",
       isActive: true,
       image: null,
